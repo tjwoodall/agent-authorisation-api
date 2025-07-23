@@ -71,7 +71,7 @@ components:
       required: true
       style: simple
   securitySchemes:
-    userRestricted:
+    User-Restricted:
       type: oauth2
       description: |
         HMRC supports OAuth 2.0 for authenticating user restricted API requests using an OAuth 2.0 Bearer Token in the AUTHORIZATION header.
@@ -589,7 +589,7 @@ paths:
       description: Create a new authorisation request. The request will expire after 21 days.
       operationId: Createanewauthorisation
       security:
-        - userRestricted:
+        - User-Restricted:
             - write:sent-invitations
       parameters:
         - $ref: '#/components/parameters/arnParameter'
@@ -642,7 +642,7 @@ paths:
       summary: Get all authorisation requests for the last 30 days
       operationId: Getallauthorisationrequestsforthelast30days
       security:
-        - userRestricted:
+        - User-Restricted:
             - read:sent-invitations
       parameters:
         - $ref: '#/components/parameters/arnParameter'
@@ -681,7 +681,7 @@ paths:
       summary: Get an invitation by id
       operationId: Getaninvitationbyid
       security:
-        - userRestricted:
+        - User-Restricted:
             - read:sent-invitations
       parameters:
         - $ref: '#/components/parameters/arnParameter'
@@ -720,7 +720,7 @@ paths:
       summary: Cancel an invitation by id
       operationId: Cancelaninvitationbyid
       security:
-        - userRestricted:
+        - User-Restricted:
             - write:cancel-invitations
       parameters:
         - $ref: '#/components/parameters/arnParameter'
@@ -750,7 +750,7 @@ paths:
       summary: Get Status of a Relationship
       operationId: GetStatusofaRelationship
       security:
-        - userRestricted:
+        - User-Restricted:
             - read:check-relationship
       parameters:
         - $ref: '#/components/parameters/arnParameter'
