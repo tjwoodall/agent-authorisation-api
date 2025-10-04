@@ -407,10 +407,10 @@ components:
             - $ref: '#/components/schemas/AgentType'
 
     ClientIdTypeNI:
-      title: ni
+      enum: [ ni ]
       type: string
     ClientIdTypeVRN:
-      title: vrn
+      enum: [ vrn ]
       type: string
     ClientIdNINO:
       title: National Insurance Number
@@ -495,19 +495,19 @@ components:
           allOf:
             - $ref: '#/components/schemas/AgentType'
     VATService:
-      title: MTD-VAT
+      enum: [ MTD-VAT ]
       type: string
       description: MTD VAT service
     ITSAService:
-      title: MTD-IT
+      enum: [ MTD-IT ]
       type: string
       description: MTD IT service
     ClientTypePersonal:
-      title: personal
+      enum: [ personal ]
       type: string
       description: An individual or sole trader
     ClientTypeBusiness:
-      title: business
+      enum: [ business ]
       type: string
       description: A company or partnership
     Links:
