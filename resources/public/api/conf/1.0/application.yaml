@@ -367,8 +367,11 @@ components:
       type: object
       properties:
         service:
-          allOf:
-            - $ref: '#/components/schemas/ITSAService'
+          maxItems: 1
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/ITSAService'
         clientType:
           allOf:
             - $ref: '#/components/schemas/ClientTypePersonal'
@@ -395,8 +398,11 @@ components:
       type: object
       properties:
         service:
-          allOf:
-            - $ref: '#/components/schemas/VATService'
+          maxItems: 1
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/VATService'
         clientType:
           oneOf:
             - $ref: '#/components/schemas/ClientTypePersonal'
@@ -420,8 +426,11 @@ components:
       type: object
       properties:
         service:
-          allOf:
-            - $ref: '#/components/schemas/VATService'
+          maxItems: 1
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/VATService'
         clientIdType:
           allOf:
             - $ref: '#/components/schemas/ClientIdTypeVRN'
@@ -441,8 +450,11 @@ components:
       type: object
       properties:
         service:
-          allOf:
-            - $ref: '#/components/schemas/ITSAService'
+          maxItems: 1
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/ITSAService'
         clientIdType:
           allOf:
             - $ref: '#/components/schemas/ClientIdTypeNI'
@@ -457,10 +469,10 @@ components:
             - $ref: '#/components/schemas/AgentType'
 
     ClientIdTypeNI:
-      title: ni
+      enum: [ ni ]
       type: string
     ClientIdTypeVRN:
-      title: vrn
+      enum: [ vrn ]
       type: string
     ClientIdNINO:
       title: National Insurance Number
@@ -545,19 +557,19 @@ components:
           allOf:
             - $ref: '#/components/schemas/AgentType'
     VATService:
-      title: MTD-VAT
+      enum: [ MTD-VAT ]
       type: string
       description: MTD VAT service
     ITSAService:
-      title: MTD-IT
+      enum: [ MTD-IT ]
       type: string
       description: MTD IT service
     ClientTypePersonal:
-      title: personal
+      enum: [ personal ]
       type: string
       description: An individual or sole trader
     ClientTypeBusiness:
-      title: business
+      enum: [ business ]
       type: string
       description: A company or partnership
     Links:
