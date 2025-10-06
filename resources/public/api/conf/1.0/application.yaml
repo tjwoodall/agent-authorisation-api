@@ -127,11 +127,9 @@ components:
             $ref: '#/components/schemas/Error'
           examples:
             acceptHeaderMissing:
-              value:
-                $ref: './examples/errors/notAcceptable_headerMissing.json'
+              externalValue: './examples/errors/notAcceptable_headerMissing.json'
             acceptHeaderInvalid:
-              value:
-                $ref: './examples/errors/notAcceptable_headerInvalid.json'
+              externalValue: './examples/errors/notAcceptable_headerInvalid.json'
     internalServerError:
       description: Internal Server Error
       content:
@@ -140,8 +138,7 @@ components:
             $ref: '#/components/schemas/Error'
           examples:
             internalServerErrorExample:
-              value:
-                $ref: './examples/errors/internalServerError.json'
+              externalValue: './examples/errors/internalServerError.json'
     forbiddenDelete:
       description: Forbidden
       content:
@@ -150,17 +147,13 @@ components:
             $ref: '#/components/schemas/Error'
           examples:
             invalidInvitationStatus:
-              value:
-                $ref: './examples/errors/forbidden_invalidInvitationStatus.json'
+              externalValue: './examples/errors/forbidden_invalidInvitationStatus.json'
             notAnAgent:
-              value:
-                $ref: './examples/errors/forbidden_notAgent.json'
+              externalValue: './examples/errors/forbidden_notAgent.json'
             agentNotSubscribed:
-              value:
-                $ref: './examples/errors/forbidden_agentNotSubscribed.json'
+              externalValue: './examples/errors/forbidden_agentNotSubscribed.json'
             noPermissionOnAgency:
-              value:
-                $ref: './examples/errors/forbidden_noPermissionOnAgency.json'
+              externalValue: './examples/errors/forbidden_noPermissionOnAgency.json'
     forbiddenCreateInvitation:
       description: Forbidden
       headers:
@@ -175,35 +168,25 @@ components:
             $ref: '#/components/schemas/Error'
           examples:
             clientRegistrationNotFound:
-              value:
-                $ref: './examples/errors/forbidden_clientRegNotFound.json'
+              externalValue: './examples/errors/forbidden_clientRegNotFound.json'
             postcodeNoMatch:
-              value:
-                $ref: './examples/errors/forbidden_postcodeNoMatch.json'
+              externalValue: './examples/errors/forbidden_postcodeNoMatch.json'
             vatRegistrationDateNoMatch:
-              value:
-                $ref: './examples/errors/forbidden_vatRegDateNoMatch.json'
+              externalValue: './examples/errors/forbidden_vatRegDateNoMatch.json'
             duplicateAuthorisationRequest:
-              value:
-                $ref: './examples/errors/forbidden_duplicateAuthReq.json'
+              externalValue: './examples/errors/forbidden_duplicateAuthReq.json'
             alreadyAuthorised:
-              value:
-                $ref: './examples/errors/forbidden_alreadyAuthorised.json'
+              externalValue: './examples/errors/forbidden_alreadyAuthorised.json'
             notAnAgent:
-              value:
-                $ref: './examples/errors/forbidden_notAgent.json'
+              externalValue: './examples/errors/forbidden_notAgent.json'
             agentNotSubscribed:
-              value:
-                $ref: './examples/errors/forbidden_agentNotSubscribed.json'
+              externalValue: './examples/errors/forbidden_agentNotSubscribed.json'
             noPermissionOnAgency:
-              value:
-                $ref: './examples/errors/forbidden_noPermissionOnAgency.json'
+              externalValue: './examples/errors/forbidden_noPermissionOnAgency.json'
             vatClientInsolvent:
-              value:
-                $ref: './examples/errors/forbidden_vatClientInsolvent.json'
+              externalValue: './examples/errors/forbidden_vatClientInsolvent.json'
             alreadyProcessing:
-              value:
-                $ref: './examples/errors/forbidden_alreadyProcessing.json'
+              externalValue: './examples/errors/forbidden_alreadyProcessing.json'
     forbiddenGetInvitations:
       description: Forbidden
       content:
@@ -212,14 +195,11 @@ components:
             $ref: '#/components/schemas/Error'
           examples:
             notAnAgent:
-              value:
-                $ref: './examples/errors/forbidden_notAgent.json'
+              externalValue: './examples/errors/forbidden_notAgent.json'
             agentNotSubscribed:
-              value:
-                $ref: './examples/errors/forbidden_agentNotSubscribed.json'
+              externalValue: './examples/errors/forbidden_agentNotSubscribed.json'
             noPermissionOnAgency:
-              value:
-                $ref: './examples/errors/forbidden_noPermissionOnAgency.json'
+              externalValue: './examples/errors/forbidden_noPermissionOnAgency.json'
     forbiddenGetRelationshipStatus:
       description: Forbidden
       content:
@@ -228,26 +208,19 @@ components:
             $ref: '#/components/schemas/Error'
           examples:
             clientRegistrationNotFound:
-              value:
-                $ref: './examples/errors/forbidden_clientRegNotFound.json'
+              externalValue: './examples/errors/forbidden_clientRegNotFound.json'
             postcodeNoMatch:
-              value:
-                $ref: './examples/errors/forbidden_postcodeNoMatch.json'
+              externalValue: './examples/errors/forbidden_postcodeNoMatch.json'
             vatRegistrationDateNoMatch:
-              value:
-                $ref: './examples/errors/forbidden_vatRegDateNoMatch.json'
+              externalValue: './examples/errors/forbidden_vatRegDateNoMatch.json'
             notAnAgent:
-              value:
-                $ref: './examples/errors/forbidden_notAgent.json'
+              externalValue: './examples/errors/forbidden_notAgent.json'
             agentNotSubscribed:
-              value:
-                $ref: './examples/errors/forbidden_agentNotSubscribed.json'
+              externalValue: './examples/errors/forbidden_agentNotSubscribed.json'
             noPermissionOnAgency:
-              value:
-                $ref: './examples/errors/forbidden_noPermissionOnAgency.json'
+              externalValue: './examples/errors/forbidden_noPermissionOnAgency.json'
             vatClientInsolvent:
-              value:
-                $ref: './examples/errors/forbidden_vatClientInsolvent.json'
+              externalValue: './examples/errors/forbidden_vatClientInsolvent.json'
     badRequestCancelInvitation:
       description: Bad Request
       content:
@@ -256,11 +229,9 @@ components:
             $ref: '#/components/schemas/Error'
           examples:
             unsupportedVersion:
-              value:
-                $ref: './examples/errors/badReq_invalidVersionAcceptHeader.json'
+              externalValue: './examples/errors/badReq_invalidVersionAcceptHeader.json'
             badRequest:
-              value:
-                $ref: './examples/errors/badReq.json'
+              externalValue: './examples/errors/badReq.json'
     badRequestCreateInvitation:
       description: Bad Request
       content:
@@ -269,35 +240,25 @@ components:
             $ref: '#/components/schemas/Error'
           examples:
             serviceNotSupported:
-              value:
-                $ref: './examples/errors/badReq_serviceNotSupported.json'
+              externalValue: './examples/errors/badReq_serviceNotSupported.json'
             invalidClientType:
-              value:
-                $ref: './examples/errors/badReq_clientTypeNotSupported.json'
+              externalValue: './examples/errors/badReq_clientTypeNotSupported.json'
             invalidClientId:
-              value:
-                $ref: './examples/errors/badReq_clientIdFormatInvalid.json'
+              externalValue: './examples/errors/badReq_clientIdFormatInvalid.json'
             clientIdDoesNotMatchService:
-              value:
-                $ref: './examples/errors/badReq_clientIdServiceMatchError.json'
+              externalValue: './examples/errors/badReq_clientIdServiceMatchError.json'
             invalidPostcode:
-              value:
-                $ref: './examples/errors/badReq_postcodeFormatInvalid.json'
+              externalValue: './examples/errors/badReq_postcodeFormatInvalid.json'
             invalidVatRegistrationDate:
-              value:
-                $ref: './examples/errors/badReq_vatRegDateFormatInvalid.json'
+              externalValue: './examples/errors/badReq_vatRegDateFormatInvalid.json'
             unsupportedVersion:
-              value:
-                $ref: './examples/errors/badReq_invalidVersionAcceptHeader.json'
+              externalValue: './examples/errors/badReq_invalidVersionAcceptHeader.json'
             unsupportedContentType:
-              value:
-                $ref: './examples/errors/badReq_unsupportedContentType.json'
+              externalValue: './examples/errors/badReq_unsupportedContentType.json'
             unsupportedAgentType:
-              value:
-                $ref: './examples/errors/badReq_unsupportedAgentType.json'
+              externalValue: './examples/errors/badReq_unsupportedAgentType.json'
             badRequest:
-              value:
-                $ref: './examples/errors/badReq.json'
+              externalValue: './examples/errors/badReq.json'
     badRequestGetRelationshipStatus:
       description: Bad Request
       content:
@@ -306,32 +267,23 @@ components:
             $ref: '#/components/schemas/Error'
           examples:
             serviceNotSupported:
-              value:
-                $ref: './examples/errors/badReq_serviceNotSupported.json'
+              externalValue: './examples/errors/badReq_serviceNotSupported.json'
             invalidClientId:
-              value:
-                $ref: './examples/errors/badReq_clientIdFormatInvalid.json'
+              externalValue: './examples/errors/badReq_clientIdFormatInvalid.json'
             clientIdDoesNotMatchService:
-              value:
-                $ref: './examples/errors/badReq_clientIdServiceMatchError.json'
+              externalValue: './examples/errors/badReq_clientIdServiceMatchError.json'
             invalidPostcode:
-              value:
-                $ref: './examples/errors/badReq_postcodeFormatInvalid.json'
+              externalValue: './examples/errors/badReq_postcodeFormatInvalid.json'
             invalidVatRegistrationDate:
-              value:
-                $ref: './examples/errors/badReq_vatRegDateFormatInvalid.json'
+              externalValue: './examples/errors/badReq_vatRegDateFormatInvalid.json'
             unsupportedVersion:
-              value:
-                $ref: './examples/errors/badReq_invalidVersionAcceptHeader.json'
+              externalValue: './examples/errors/badReq_invalidVersionAcceptHeader.json'
             unsupportedContentType:
-              value:
-                $ref: './examples/errors/badReq_unsupportedContentType.json'
+              externalValue: './examples/errors/badReq_unsupportedContentType.json'
             unsupportedAgentType:
-              value:
-                $ref: './examples/errors/badReq_unsupportedAgentType.json'
+              externalValue: './examples/errors/badReq_unsupportedAgentType.json'
             badRequest:
-              value:
-                $ref: './examples/errors/badReq.json'
+              externalValue: './examples/errors/badReq.json'
     badRequestGetInvitations:
       description: Bad Request
       content:
@@ -340,11 +292,9 @@ components:
             $ref: '#/components/schemas/Error'
           examples:
             unsupportedVersion:
-              value:
-                $ref: './examples/errors/badReq_invalidVersionAcceptHeader.json'
+              externalValue: './examples/errors/badReq_invalidVersionAcceptHeader.json'
             badRequest:
-              value:
-                $ref: './examples/errors/badReq.json'
+              externalValue: './examples/errors/badReq.json'
   schemas:
     Error:
       type: object
@@ -603,17 +553,13 @@ paths:
                 - $ref: '#/components/schemas/AgentsInvitationsVATRequest'
             examples:
               example-ITSA:
-                value:
-                  $ref: './examples/post-agency-invitations-itsa-example.json'
+                externalValue: './examples/post-agency-invitations-itsa-example.json'
               example-ITSA-main:
-                value:
-                  $ref: './examples/post-agency-invitations-itsa-main-example.json'
+                externalValue: './examples/post-agency-invitations-itsa-main-example.json'
               example-ITSA-supporting:
-                value:
-                  $ref: './examples/post-agency-invitations-itsa-supp-example.json'
+                externalValue: './examples/post-agency-invitations-itsa-supp-example.json'
               example-VAT:
-                value:
-                  $ref: './examples/post-agency-invitations-vat-example.json'
+                externalValue: './examples/post-agency-invitations-vat-example.json'
         required: true
       responses:
         '204':
@@ -658,8 +604,7 @@ paths:
                 description: Returns all authorisation requests for the last 30 days.
               examples:
                 pending and responded:
-                  value:
-                    $ref: './examples/get-agency-invitations-example.json'
+                  externalValue: './examples/get-agency-invitations-example.json'
         '204':
           description: The agent has no authorisation requests in the last 30 days
         '403':
@@ -695,11 +640,9 @@ paths:
                 $ref: '#/components/schemas/AgentsInvitationsResponse'
               examples:
                 pending:
-                  value:
-                    $ref: './examples/get-agency-invitation-pending-example.json'
+                  externalValue: './examples/get-agency-invitation-pending-example.json'
                 responded:
-                  value:
-                    $ref: './examples/get-agency-invitation-responded-example.json'
+                  externalValue: './examples/get-agency-invitation-responded-example.json'
         '403':
           $ref: '#/components/responses/forbiddenGetInvitations'
         '404':
@@ -764,17 +707,13 @@ paths:
                 - $ref: '#/components/schemas/CheckRelationshipITSARequest'
             examples:
               example-ITSA:
-                value:
-                  $ref: './examples/post-agency-check-relationship-itsa-example.json'
+                externalValue: './examples/post-agency-check-relationship-itsa-example.json'
               example-ITSA-main:
-                value:
-                  $ref: './examples/post-agency-check-relationship-itsa-main-example.json'
+                externalValue: './examples/post-agency-check-relationship-itsa-main-example.json'
               example-ITSA-supporting:
-                value:
-                  $ref: './examples/post-agency-check-relationship-itsa-supp-example.json'
+                externalValue: './examples/post-agency-check-relationship-itsa-supp-example.json'
               example-VAT:
-                value:
-                  $ref: './examples/post-agency-check-relationship-vat-example.json'
+                externalValue: './examples/post-agency-check-relationship-vat-example.json'
         required: true
       responses:
         '204':
