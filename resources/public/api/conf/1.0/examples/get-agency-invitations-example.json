@@ -5,7 +5,7 @@
       "href": "/agents/AARN9999999/invitations/CS5AK7O8FPC43"
     }
   },
-  "created": "2019-01-21T14:27:44.620",
+  "created": "2019-01-21T14:27:44.620Z",
   "arn": "AARN9999999",
   "service": ["MTD-IT"],
   "status": "Pending",
@@ -19,11 +19,11 @@
         "href": "/agents/AARN9999999/invitations/CS5AK7O8FPC43"
       }
     },
-    "created": "2019-01-21T14:27:44.620",
+    "created": "2019-01-21T14:27:44.620Z",
     "arn": "AARN9999999",
     "service": ["MTD-IT"],
     "status": "Accepted",
-    "updated": "2019-01-21T14:27:44.620",
+    "updated": "2019-01-21T14:27:44.620Z",
     "agentType": "supporting"
   }
 ]

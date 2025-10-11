@@ -536,7 +536,7 @@ components:
         expiresOn:
           type: string
           description: Expiration time of the request (RFC3339 / ISO8601 format)
-          format: date
+          format: date-timeX
         status:
           type: string
           enum: [
