@@ -455,10 +455,10 @@ components:
             - $ref: '#/components/schemas/AgentType'
 
     ClientIdTypeNI:
-      title: ni
+      enum: [ ni ]
       type: string
     ClientIdTypeVRN:
-      title: vrn
+      enum: [ vrn ]
       type: string
     ClientIdNINO:
       title: National Insurance Number
@@ -519,7 +519,7 @@ components:
         expiresOn:
           type: string
           description: Expiration time of the request (RFC3339 / ISO8601 format)
-          format: date
+          format: date-timeX
         status:
           type: string
           enum: [
@@ -564,11 +564,11 @@ components:
         - MTD-IT
       description: MTD IT service
     ClientTypePersonal:
-      title: personal
+      enum: [ personal ]
       type: string
       description: An individual or sole trader
     ClientTypeBusiness:
-      title: business
+      enum: [ business ]
       type: string
       description: A company or partnership
     Links:
