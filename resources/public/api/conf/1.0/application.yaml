@@ -503,12 +503,9 @@ components:
             - $ref: '#/components/schemas/Links'
             - description: The link to the invitation
         service:
-          maxItems: 1
-          type: array
-          items:
-            oneOf:
-              - $ref: '#/components/schemas/ITSAService'
-              - $ref: '#/components/schemas/VATService'
+          oneOf:
+            - $ref: '#/components/schemas/ITSAService'
+            - $ref: '#/components/schemas/VATService'
           description: The service to which this invitation refers
         arn:
           type: string
