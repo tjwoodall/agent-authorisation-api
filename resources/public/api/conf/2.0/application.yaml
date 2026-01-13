@@ -455,10 +455,10 @@ components:
             - $ref: '#/components/schemas/AgentType'
 
     ClientIdTypeNI:
-      title: ni
+      enum: [ ni ]
       type: string
     ClientIdTypeVRN:
-      title: vrn
+      enum: [ vrn ]
       type: string
     ClientIdNINO:
       title: National Insurance Number
@@ -501,12 +501,9 @@ components:
             - $ref: '#/components/schemas/Links'
             - description: The link to the invitation
         service:
-          maxItems: 1
-          type: array
-          items:
-            oneOf:
-              - $ref: '#/components/schemas/ITSAService'
-              - $ref: '#/components/schemas/VATService'
+          oneOf:
+            - $ref: '#/components/schemas/ITSAService'
+            - $ref: '#/components/schemas/VATService'
           description: The service to which this invitation refers
         arn:
           type: string
@@ -522,7 +519,7 @@ components:
         expiresOn:
           type: string
           description: Expiration time of the request (RFC3339 / ISO8601 format)
-          format: date
+          format: date-timeX
         status:
           type: string
           enum: [
@@ -543,19 +540,19 @@ components:
           allOf:
             - $ref: '#/components/schemas/AgentType'
     VATService:
-      title: MTD-VAT
+      enum: [ MTD-VAT ]
       type: string
       description: MTD VAT service
     ITSAService:
-      title: MTD-IT
+      enum: [ MTD-IT ]
       type: string
       description: MTD IT service
     ClientTypePersonal:
-      title: personal
+      enum: [ personal ]
       type: string
       description: An individual or sole trader
     ClientTypeBusiness:
-      title: business
+      enum: [ business ]
       type: string
       description: A company or partnership
     Links:
