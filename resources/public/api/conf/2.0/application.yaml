@@ -15,9 +15,9 @@ info:
 
 
 servers:
-  - url: https://test-api.service.hmrc.gov.uk/
+  - url: https://test-api.service.hmrc.gov.uk
     description: Sandbox
-  - url: https://api.service.hmrc.gov.uk/
+  - url: https://api.service.hmrc.gov.uk
     description: Production
 
 components:
@@ -847,7 +847,7 @@ paths:
       summary: Delete an existing relationship
       operationId: DeleteRelationship
       security:
-        - userRestricted:
+        - User-Restricted:
             - write:sent-invitations
       parameters:
         - $ref: '#/components/parameters/arnParameter'
