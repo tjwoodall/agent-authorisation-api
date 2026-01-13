@@ -1,0 +1,1020 @@
+openapi: 3.0.3
+info:
+  title: Agent Authorisation
+  version: '1.0'
+  description: |-
+
+    # Overview
+    You can find more information about this API in the [agent-authorisation-api](https://github.com/hmrc/agent-authorisation-api/blob/main/README.md) GitHub repository.
+    # Changelog
+    You can find the changelog in the [agent-authorisation-api](https://github.com/hmrc/agent-authorisation-api/blob/main/CHANGE_LOG.md) GitHub repository.
+servers:
+  - url: https://test-api.service.hmrc.gov.uk/
+    description: Sandbox
+  - url: https://api.service.hmrc.gov.uk/
+    description: Production
+tags:
+  - name: Agents
+    description: ''
+paths:
+  /agents/{arn}/invitations:
+    post:
+      tags:
+        - Agents
+      summary: Create a new authorisation
+      description: Create a new authorisation request. The request will expire after 21 days.
+      operationId: Createanewauthorisation
+      security:
+        - userRestricted:
+            - write:sent-invitations
+      parameters:
+        - name: arn
+          in: path
+          description: The Making Tax Digital (MTD) platform Agent Reference Number. For format and validation of Agent Reference Number [See here](https://github.com/hmrc/agent-authorisation-api/tree/main/app/uk/gov/hmrc/agentauthorisation/models/Arn.scala)
+          required: true
+          style: simple
+          schema: &ref_2
+            type: string
+            example: AARN9999999
+        - name: Accept
+          in: header
+          description: Specifies the response format and the [version](/api-documentation/docs/reference-guide#versioning) of the API to be used.
+          required: true
+          schema: &ref_3
+            type: string
+            enum:
+              - application/vnd.hmrc.1.0+json
+        - name: Content-Type
+          in: header
+          description: The media type of the request body.
+          schema: &ref_13
+            type: string
+            enum:
+              - application/json
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - title: Agent Invitation Request for MTD-IT
+                  required: &ref_23
+                    - service
+                    - clientType
+                    - clientIdType
+                    - clientId
+                    - knownFact
+                  type: object
+                  properties: &ref_24
+                    service:
+                      allOf:
+                        - title: MTD-IT
+                          type: string
+                          description: MTD IT service
+                    clientType:
+                      allOf:
+                        - title: personal
+                          type: string
+                          description: An individual or sole trader
+                    clientIdType:
+                      allOf:
+                        - title: ni
+                          type: string
+                    clientId:
+                      allOf:
+                        - title: National Insurance Number
+                          type: string
+                          pattern: ^[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ]?\d{2}?\d{2}?\d{2}?[A-D]{1}$
+                    knownFact:
+                      allOf:
+                        - title: Postcode
+                          type: string
+                          pattern: ^[A-Z]{1,2}[0-9][0-9A-Z]?\s?[0-9][A-Z]{2}$|BFPO\s?[0-9]{1,5}$
+                    agentType:
+                      allOf:
+                        - title: Agent type
+                          nullable: true
+                          type: string
+                          enum: &ref_4
+                            - main
+                            - supporting
+                          description: Only MTD-IT supports this field. Defaults to "main" if omitted.
+                - title: Agent Invitation Request for VAT
+                  required: &ref_25
+                    - service
+                    - clientType
+                    - clientIdType
+                    - clientId
+                    - knownFact
+                  type: object
+                  properties: &ref_26
+                    service:
+                      allOf:
+                        - title: MTD-VAT
+                          type: string
+                          description: MTD VAT service
+                    clientType:
+                      oneOf:
+                        - title: personal
+                          type: string
+                          description: An individual or sole trader
+                        - title: business
+                          type: string
+                          description: A company or partnership
+                    clientIdType:
+                      allOf:
+                        - title: vrn
+                          type: string
+                    clientId:
+                      allOf:
+                        - title: VAT Registration Number
+                          type: string
+                          pattern: ^[0-9]{1,9}$
+                    knownFact:
+                      allOf:
+                        - title: VAT registration date
+                          type: string
+                          pattern: yyyy-mm-dd
+            examples:
+              example-ITSA:
+                value:
+                  service:
+                    - MTD-IT
+                  clientType: personal
+                  clientIdType: ni
+                  clientId: AA999999A
+                  knownFact: AA11 1AA
+              example-ITSA-main:
+                value:
+                  service:
+                    - MTD-IT
+                  clientType: personal
+                  clientIdType: ni
+                  clientId: AA999999A
+                  knownFact: AA11 1AA
+                  agentType: main
+              example-ITSA-supporting:
+                value:
+                  service:
+                    - MTD-IT
+                  clientType: personal
+                  clientIdType: ni
+                  clientId: AA999999A
+                  knownFact: AA11 1AA
+                  agentType: supporting
+              example-VAT:
+                value:
+                  service:
+                    - MTD-VAT
+                  clientType: business
+                  clientIdType: vrn
+                  clientId: '101747696'
+                  knownFact: '2007-05-18'
+        required: true
+      responses:
+        '204':
+          description: The request was accepted and an authorisation request has been created
+          headers:
+            Location:
+              description: Location of the authorisation request.
+              schema:
+                type: string
+                example: /agents/AARN9999999/invitations/CS5AK7O8FPC43
+        '400':
+          description: Bad Request
+          content: &ref_21
+            application/json:
+              schema:
+                type: object
+                properties: &ref_0
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required: &ref_1
+                  - code
+                  - message
+              examples:
+                serviceNotSupported:
+                  value:
+                    code: SERVICE_NOT_SUPPORTED
+                    message: The service requested is not supported. Check the API documentation to find which services are supported.
+                invalidClientType:
+                  value:
+                    code: CLIENT_TYPE_NOT_SUPPORTED
+                    message: The client type requested is not supported. Check the API documentation to find which client types are supported.
+                invalidClientId:
+                  value:
+                    code: CLIENT_ID_FORMAT_INVALID
+                    message: Client identifier must be in the correct format. Check the API documentation to find the correct format.
+                clientIdDoesNotMatchService:
+                  value:
+                    code: CLIENT_ID_DOES_NOT_MATCH_SERVICE
+                    message: The type of client Identifier provided cannot be used with the requested service. Check the API documentation for details of the correct client identifiers to use.
+                invalidPostcode:
+                  value:
+                    code: POSTCODE_FORMAT_INVALID
+                    message: Postcode must be in the correct format. Check the API documentation to find the correct format.
+                invalidVatRegistrationDate:
+                  value:
+                    code: VAT_REG_DATE_FORMAT_INVALID
+                    message: VAT registration date must be in the correct format. Check the API documentation to find the correct format.
+                unsupportedVersion:
+                  value:
+                    code: BAD_REQUEST
+                    message: Missing or unsupported version number
+                unsupportedContentType:
+                  value:
+                    code: BAD_REQUEST
+                    message: Missing or unsupported content-type.
+                unsupportedAgentType:
+                  value:
+                    code: AGENT_TYPE_NOT_SUPPORTED
+                    message: The agent type requested is not supported. Check the API documentation to find which agent types are supported.
+                badRequest:
+                  value:
+                    code: BAD_REQUEST
+                    message: Bad Request
+        '401':
+          description: Unauthorized
+          content: &ref_5
+            application/json:
+              schema:
+                type: object
+                properties: *ref_0
+                required: *ref_1
+              examples:
+                unauthorizedRequest:
+                  value:
+                    code: UNAUTHORIZED
+                    message: Bearer token is missing or not authorized.
+        '403':
+          description: Forbidden
+          headers: &ref_17
+            Location:
+              description: Location of the authorisation request. (Only returned with duplicateAuthorisationRequest)
+              schema:
+                type: string
+                example: /agents/AARN9999999/invitations/CS5AK7O8FPC43
+          content: &ref_18
+            application/json:
+              schema:
+                type: object
+                properties: *ref_0
+                required: *ref_1
+              examples:
+                clientRegistrationNotFound:
+                  value:
+                    code: CLIENT_REGISTRATION_NOT_FOUND
+                    message: The details provided for this client do not match HMRC's records.
+                postcodeNoMatch:
+                  value:
+                    code: POSTCODE_DOES_NOT_MATCH
+                    message: The postcode provided does not match HMRC's record for the client.
+                vatRegistrationDateNoMatch:
+                  value:
+                    code: VAT_REG_DATE_DOES_NOT_MATCH
+                    message: The VAT registration date provided does not match HMRC's record for the client.
+                duplicateAuthorisationRequest:
+                  value:
+                    code: DUPLICATE_AUTHORISATION_REQUEST
+                    message: An authorisation request for this service has already been created and is awaiting the client’s response.
+                alreadyAuthorised:
+                  value:
+                    code: ALREADY_AUTHORISED
+                    message: The client has already authorised the agent for this service. The agent does not need ask the client for this authorisation again.
+                notAnAgent:
+                  value:
+                    code: NOT_AN_AGENT
+                    message: This user does not have a Government Gateway agent account. They need to create an Government Gateway agent account before they can use this service.
+                agentNotSubscribed:
+                  value:
+                    code: AGENT_NOT_SUBSCRIBED
+                    message: This agent needs to create an agent services account before they can use this service.
+                noPermissionOnAgency:
+                  value:
+                    code: NO_PERMISSION_ON_AGENCY
+                    message: The user that is signed in cannot access this authorisation request. Their details do not match the agent business that created the authorisation request.
+                vatClientInsolvent:
+                  value:
+                    code: VAT_CLIENT_INSOLVENT
+                    message: The VAT registration number belongs to a customer that is insolvent.
+                alreadyProcessing:
+                  value:
+                    code: ALREADY_BEING_PROCESSED
+                    message: More than one request received to create the same invitation.
+        '406':
+          description: Not Acceptable
+          content: &ref_6
+            application/json:
+              schema:
+                type: object
+                properties: *ref_0
+                required: *ref_1
+              examples:
+                acceptHeaderMissing:
+                  value:
+                    code: ACCEPT_HEADER_INVALID
+                    message: Missing 'Accept' header.
+                acceptHeaderInvalid:
+                  value:
+                    code: ACCEPT_HEADER_INVALID
+                    message: Invalid 'Accept' header
+        '500':
+          description: Internal Server Error
+          content: &ref_7
+            application/json:
+              schema:
+                type: object
+                properties: *ref_0
+                required: *ref_1
+              examples:
+                internalServerErrorExample:
+                  value:
+                    code: INTERNAL_SERVER_ERROR
+                    message: Internal server error
+      deprecated: false
+    get:
+      tags:
+        - Agents
+      summary: Get all authorisation requests for the last 30 days
+      operationId: Getallauthorisationrequestsforthelast30days
+      security:
+        - userRestricted:
+            - read:sent-invitations
+      parameters:
+        - name: arn
+          in: path
+          description: The Making Tax Digital (MTD) platform Agent Reference Number. For format and validation of Agent Reference Number [See here](https://github.com/hmrc/agent-authorisation-api/tree/main/app/uk/gov/hmrc/agentauthorisation/models/Arn.scala)
+          required: true
+          style: simple
+          schema: *ref_2
+        - name: Accept
+          in: header
+          description: Specifies the response format and the [version](/api-documentation/docs/reference-guide#versioning) of the API to be used.
+          required: true
+          schema: *ref_3
+      responses:
+        '200':
+          description: A list of authorisation requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  title: AgentsInvitationsResponse
+                  required: &ref_8
+                    - _links
+                    - service
+                    - arn
+                    - created
+                    - status
+                  type: object
+                  properties: &ref_9
+                    _links:
+                      allOf:
+                        - title: Links
+                          required: &ref_31
+                            - self
+                          type: object
+                          properties: &ref_32
+                            self:
+                              allOf:
+                                - title: Self
+                                  required:
+                                    - href
+                                  type: object
+                                  properties:
+                                    href:
+                                      type: string
+                                  description: A link to the current resource.
+                          description: A link to the current resource.
+                        - description: The link to the invitation
+                    service:
+                      maxItems: 1
+                      type: array
+                      items:
+                        oneOf:
+                          - title: MTD-IT
+                            type: string
+                            description: MTD IT service
+                          - title: MTD-VAT
+                            type: string
+                            description: MTD VAT service
+                      description: The service to which this invitation refers
+                    arn:
+                      type: string
+                      description: The Agent Registration Number for the calling agency
+                    created:
+                      type: string
+                      description: Creation time of the request (RFC3339 / ISO8601 format)
+                      format: date-time
+                    updated:
+                      type: string
+                      description: Update time of the request (RFC3339 / ISO8601 format)
+                      format: date-time
+                    expiresOn:
+                      type: string
+                      description: Expiration time of the request (RFC3339 / ISO8601 format)
+                      format: date
+                    status:
+                      type: string
+                      enum:
+                        - Pending
+                        - Accepted
+                        - Rejected
+                        - Cancelled
+                        - Deauthorised
+                        - Expired
+                        - Partialauth
+                      description: The current status of the invitation
+                    clientActionUrl:
+                      type: string
+                      description: Link for the client to authorise/reject this agent's invitation.
+                      format: uri
+                    agentType:
+                      allOf:
+                        - title: Agent type
+                          nullable: true
+                          type: string
+                          enum: *ref_4
+                          description: Only MTD-IT supports this field. Defaults to "main" if omitted.
+                description: Returns all authorisation requests for the last 30 days.
+              examples:
+                pending and responded:
+                  value:
+                    - _links:
+                        self:
+                          href: /agents/AARN9999999/invitations/CS5AK7O8FPC43
+                      created: '2019-01-21T14:27:44.620'
+                      arn: AARN9999999
+                      service:
+                        - MTD-IT
+                      status: Pending
+                      expiresOn: 2019-02-11T00:00:00:000
+                      clientActionUrl: https://www.tax.service.gov.uk/agent-client-relationships/appoint-someone-to-deal-with-HMRC-for-you/12345678/agent-1/income-tax
+                      agentType: main
+                    - _links:
+                        self:
+                          href: /agents/AARN9999999/invitations/CS5AK7O8FPC43
+                      created: '2019-01-21T14:27:44.620'
+                      arn: AARN9999999
+                      service:
+                        - MTD-IT
+                      status: Accepted
+                      updated: '2019-01-21T14:27:44.620'
+                      agentType: supporting
+        '204':
+          description: The agent has no authorisation requests in the last 30 days
+        '400':
+          description: Bad Request
+          content: &ref_10
+            application/json:
+              schema:
+                type: object
+                properties: *ref_0
+                required: *ref_1
+              examples:
+                unsupportedVersion:
+                  value:
+                    code: BAD_REQUEST
+                    message: Missing or unsupported version number
+                badRequest:
+                  value:
+                    code: BAD_REQUEST
+                    message: Bad Request
+        '401':
+          description: Unauthorized
+          content: *ref_5
+        '403':
+          description: Forbidden
+          content: &ref_11
+            application/json:
+              schema:
+                type: object
+                properties: *ref_0
+                required: *ref_1
+              examples:
+                notAnAgent:
+                  value:
+                    code: NOT_AN_AGENT
+                    message: This user does not have a Government Gateway agent account. They need to create an Government Gateway agent account before they can use this service.
+                agentNotSubscribed:
+                  value:
+                    code: AGENT_NOT_SUBSCRIBED
+                    message: This agent needs to create an agent services account before they can use this service.
+                noPermissionOnAgency:
+                  value:
+                    code: NO_PERMISSION_ON_AGENCY
+                    message: The user that is signed in cannot access this authorisation request. Their details do not match the agent business that created the authorisation request.
+        '406':
+          description: Not Acceptable
+          content: *ref_6
+        '500':
+          description: Internal Server Error
+          content: *ref_7
+      deprecated: false
+  /agents/{arn}/invitations/{invitationId}:
+    get:
+      tags:
+        - Agents
+      summary: Get an invitation by id
+      operationId: Getaninvitationbyid
+      security:
+        - userRestricted:
+            - read:sent-invitations
+      parameters:
+        - name: arn
+          in: path
+          description: The Making Tax Digital (MTD) platform Agent Reference Number. For format and validation of Agent Reference Number [See here](https://github.com/hmrc/agent-authorisation-api/tree/main/app/uk/gov/hmrc/agentauthorisation/models/Arn.scala)
+          required: true
+          style: simple
+          schema: *ref_2
+        - name: invitationId
+          in: path
+          description: A unique authorisation request ID
+          required: true
+          style: simple
+          schema: &ref_12
+            type: string
+            example: CS5AK7O8FPC43
+        - name: Accept
+          in: header
+          description: Specifies the response format and the [version](/api-documentation/docs/reference-guide#versioning) of the API to be used.
+          required: true
+          schema: *ref_3
+      responses:
+        '200':
+          description: The authorisation request
+          content:
+            application/json:
+              schema:
+                title: AgentsInvitationsResponse
+                required: *ref_8
+                type: object
+                properties: *ref_9
+              examples:
+                pending:
+                  value:
+                    _links:
+                      self:
+                        href: /agents/AARN9999999/invitations/CS5AK7O8FPC43
+                    created: '2019-01-21T14:27:44.620'
+                    expiresOn: '2019-02-11T00:00:00.00'
+                    arn: AARN9999999
+                    service:
+                      - MTD-IT
+                    status: Pending
+                    clientActionUrl: https://www.tax.service.gov.uk/agent-client-relationships/appoint-someone-to-deal-with-HMRC-for-you/12345678/agent-1/income-tax
+                    agentType: main
+                responded:
+                  value:
+                    _links:
+                      self:
+                        href: /agents/AARN9999999/invitations/CS5AK7O8FPC43
+                    created: '2019-01-21T14:27:44.620'
+                    updated: '2019-01-21T14:27:44.620'
+                    arn: AARN9999999
+                    service:
+                      - MTD-VAT
+                    status: Accepted
+        '400':
+          description: Bad Request
+          content: *ref_10
+        '401':
+          description: Unauthorized
+          content: *ref_5
+        '403':
+          description: Forbidden
+          content: *ref_11
+        '404':
+          description: Not Found
+          content: &ref_14
+            application/json:
+              schema:
+                type: object
+                properties: *ref_0
+                required: *ref_1
+              examples:
+                invitationNotFound:
+                  value:
+                    code: INVITATION_NOT_FOUND
+                    message: The authorisation request cannot be found.
+        '406':
+          description: Not Acceptable
+          content: *ref_6
+        '500':
+          description: Internal Server Error
+          content: *ref_7
+      deprecated: false
+    delete:
+      tags:
+        - Agents
+      summary: Cancel an invitation by id
+      operationId: Cancelaninvitationbyid
+      security:
+        - userRestricted:
+            - write:cancel-invitations
+      parameters:
+        - name: arn
+          in: path
+          description: The Making Tax Digital (MTD) platform Agent Reference Number. For format and validation of Agent Reference Number [See here](https://github.com/hmrc/agent-authorisation-api/tree/main/app/uk/gov/hmrc/agentauthorisation/models/Arn.scala)
+          required: true
+          style: simple
+          schema: *ref_2
+        - name: invitationId
+          in: path
+          description: A unique authorisation request ID
+          required: true
+          style: simple
+          schema: *ref_12
+        - name: Accept
+          in: header
+          description: Specifies the response format and the [version](/api-documentation/docs/reference-guide#versioning) of the API to be used.
+          required: true
+          schema: *ref_3
+        - name: Content-Type
+          in: header
+          description: The media type of the request body.
+          schema: *ref_13
+          required: true
+      responses:
+        '204':
+          description: The authorisation request has been cancelled
+        '400':
+          description: Bad Request
+          content: &ref_20
+            application/json:
+              schema:
+                type: object
+                properties: *ref_0
+                required: *ref_1
+              examples:
+                unsupportedVersion:
+                  value:
+                    code: BAD_REQUEST
+                    message: Missing or unsupported version number
+                badRequest:
+                  value:
+                    code: BAD_REQUEST
+                    message: Bad Request
+        '401':
+          description: Unauthorized
+          content: *ref_5
+        '403':
+          description: Forbidden
+          content: &ref_16
+            application/json:
+              schema:
+                type: object
+                properties: *ref_0
+                required: *ref_1
+              examples:
+                invalidInvitationStatus:
+                  value:
+                    code: INVALID_INVITATION_STATUS
+                    message: This authorisation request cannot be cancelled as the client has already responded to the request, or the request has expired.
+                notAnAgent:
+                  value:
+                    code: NOT_AN_AGENT
+                    message: This user does not have a Government Gateway agent account. They need to create an Government Gateway agent account before they can use this service.
+                agentNotSubscribed:
+                  value:
+                    code: AGENT_NOT_SUBSCRIBED
+                    message: This agent needs to create an agent services account before they can use this service.
+                noPermissionOnAgency:
+                  value:
+                    code: NO_PERMISSION_ON_AGENCY
+                    message: The user that is signed in cannot access this authorisation request. Their details do not match the agent business that created the authorisation request.
+        '404':
+          description: Not Found
+          content: *ref_14
+        '406':
+          description: Not Acceptable
+          content: *ref_6
+        '500':
+          description: Internal Server Error
+          content: *ref_7
+      deprecated: false
+  /agents/{arn}/relationships:
+    post:
+      tags:
+        - Agents
+      summary: Get Status of a Relationship
+      operationId: GetStatusofaRelationship
+      security:
+        - userRestricted:
+            - read:check-relationship
+      parameters:
+        - name: arn
+          in: path
+          description: The Making Tax Digital (MTD) platform Agent Reference Number. For format and validation of Agent Reference Number [See here](https://github.com/hmrc/agent-authorisation-api/tree/main/app/uk/gov/hmrc/agentauthorisation/models/Arn.scala)
+          required: true
+          style: simple
+          schema: *ref_2
+        - name: Accept
+          in: header
+          description: Specifies the response format and the [version](/api-documentation/docs/reference-guide#versioning) of the API to be used.
+          required: true
+          schema: *ref_3
+        - name: Content-Type
+          in: header
+          description: The media type of the request body.
+          schema: *ref_13
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - title: Check Status of Relationship Request for MTD-VAT
+                  required: &ref_27
+                    - service
+                    - clientIdType
+                    - clientId
+                    - knownFact
+                  type: object
+                  properties: &ref_28
+                    service:
+                      allOf:
+                        - title: MTD-VAT
+                          type: string
+                          description: MTD VAT service
+                    clientIdType:
+                      allOf:
+                        - title: vrn
+                          type: string
+                    clientId:
+                      allOf:
+                        - title: VAT Registration Number
+                          type: string
+                          pattern: ^[0-9]{1,9}$
+                    knownFact:
+                      allOf:
+                        - title: VAT registration date
+                          type: string
+                          pattern: yyyy-mm-dd
+                - title: Check Status of Relationship Request for MTD-IT
+                  required: &ref_29
+                    - service
+                    - clientIdType
+                    - clientId
+                    - knownFact
+                  type: object
+                  properties: &ref_30
+                    service:
+                      allOf:
+                        - title: MTD-IT
+                          type: string
+                          description: MTD IT service
+                    clientIdType:
+                      allOf:
+                        - title: ni
+                          type: string
+                    clientId:
+                      allOf:
+                        - title: National Insurance Number
+                          type: string
+                          pattern: ^[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ]?\d{2}?\d{2}?\d{2}?[A-D]{1}$
+                    knownFact:
+                      allOf:
+                        - title: Postcode
+                          type: string
+                          pattern: ^[A-Z]{1,2}[0-9][0-9A-Z]?\s?[0-9][A-Z]{2}$|BFPO\s?[0-9]{1,5}$
+                    agentType:
+                      allOf:
+                        - title: Agent type
+                          nullable: true
+                          type: string
+                          enum: *ref_4
+                          description: Only MTD-IT supports this field. Defaults to "main" if omitted.
+            examples:
+              example-ITSA:
+                value:
+                  service:
+                    - MTD-IT
+                  clientIdType: ni
+                  clientId: AA999999A
+                  knownFact: AA11 1AA
+              example-ITSA-main:
+                value:
+                  service:
+                    - MTD-IT
+                  clientIdType: ni
+                  clientId: AA999999A
+                  knownFact: AA11 1AA
+                  agentType: main
+              example-ITSA-supporting:
+                value:
+                  service:
+                    - MTD-IT
+                  clientIdType: ni
+                  clientId: AA999999A
+                  knownFact: AA11 1AA
+                  agentType: supporting
+              example-VAT:
+                value:
+                  service:
+                    - MTD-VAT
+                  clientIdType: vrn
+                  clientId: '101747696'
+                  knownFact: '2007-05-18'
+        required: true
+      responses:
+        '204':
+          description: The agent is authorised to act for the client.
+        '400':
+          description: Bad Request
+          content: &ref_22
+            application/json:
+              schema:
+                type: object
+                properties: *ref_0
+                required: *ref_1
+              examples:
+                serviceNotSupported:
+                  value:
+                    code: SERVICE_NOT_SUPPORTED
+                    message: The service requested is not supported. Check the API documentation to find which services are supported.
+                invalidClientId:
+                  value:
+                    code: CLIENT_ID_FORMAT_INVALID
+                    message: Client identifier must be in the correct format. Check the API documentation to find the correct format.
+                clientIdDoesNotMatchService:
+                  value:
+                    code: CLIENT_ID_DOES_NOT_MATCH_SERVICE
+                    message: The type of client Identifier provided cannot be used with the requested service. Check the API documentation for details of the correct client identifiers to use.
+                invalidPostcode:
+                  value:
+                    code: POSTCODE_FORMAT_INVALID
+                    message: Postcode must be in the correct format. Check the API documentation to find the correct format.
+                invalidVatRegistrationDate:
+                  value:
+                    code: VAT_REG_DATE_FORMAT_INVALID
+                    message: VAT registration date must be in the correct format. Check the API documentation to find the correct format.
+                unsupportedVersion:
+                  value:
+                    code: BAD_REQUEST
+                    message: Missing or unsupported version number
+                unsupportedContentType:
+                  value:
+                    code: BAD_REQUEST
+                    message: Missing or unsupported content-type.
+                unsupportedAgentType:
+                  value:
+                    code: AGENT_TYPE_NOT_SUPPORTED
+                    message: The agent type requested is not supported. Check the API documentation to find which agent types are supported.
+                badRequest:
+                  value:
+                    code: BAD_REQUEST
+                    message: Bad Request
+        '401':
+          description: Unauthorized
+          content: *ref_5
+        '403':
+          description: Forbidden
+          content: &ref_19
+            application/json:
+              schema:
+                type: object
+                properties: *ref_0
+                required: *ref_1
+              examples:
+                clientRegistrationNotFound:
+                  value:
+                    code: CLIENT_REGISTRATION_NOT_FOUND
+                    message: The details provided for this client do not match HMRC's records.
+                postcodeNoMatch:
+                  value:
+                    code: POSTCODE_DOES_NOT_MATCH
+                    message: The postcode provided does not match HMRC's record for the client.
+                vatRegistrationDateNoMatch:
+                  value:
+                    code: VAT_REG_DATE_DOES_NOT_MATCH
+                    message: The VAT registration date provided does not match HMRC's record for the client.
+                notAnAgent:
+                  value:
+                    code: NOT_AN_AGENT
+                    message: This user does not have a Government Gateway agent account. They need to create an Government Gateway agent account before they can use this service.
+                agentNotSubscribed:
+                  value:
+                    code: AGENT_NOT_SUBSCRIBED
+                    message: This agent needs to create an agent services account before they can use this service.
+                noPermissionOnAgency:
+                  value:
+                    code: NO_PERMISSION_ON_AGENCY
+                    message: The user that is signed in cannot access this authorisation request. Their details do not match the agent business that created the authorisation request.
+                vatClientInsolvent:
+                  value:
+                    code: VAT_CLIENT_INSOLVENT
+                    message: The VAT registration number belongs to a customer that is insolvent.
+        '404':
+          description: Not Found
+          content: &ref_15
+            application/json:
+              schema:
+                type: object
+                properties: *ref_0
+                required: *ref_1
+              examples:
+                relationshipNotFound:
+                  value:
+                    code: RELATIONSHIP_NOT_FOUND
+                    message: Relationship is inactive. Agent is not authorised to act for this client.
+        '406':
+          description: Not Acceptable
+          content: *ref_6
+        '500':
+          description: Internal Server Error
+          content: *ref_7
+      deprecated: false
+components:
+  securitySchemes:
+    userRestricted:
+      type: oauth2
+      description: |
+        HMRC supports OAuth 2.0 for authenticating user restricted API requests using an OAuth 2.0 Bearer Token in the AUTHORIZATION header.
+        See https://developer.service.hmrc.gov.uk/api-documentation/docs/authorisation/user-restricted-endpoints for details.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.service.hmrc.gov.uk/oauth/authorize
+          tokenUrl: https://api.service.hmrc.gov.uk/oauth/token
+          refreshUrl: https://api.service.hmrc.gov.uk/oauth/refresh
+          scopes:
+            read:sent-invitations: Grants read access
+            read:check-relationship: Grants read access
+            write:sent-invitations: Grants write access
+            write:cancel-invitations: Grants write access
+  responses:
+    notFoundInvitation:
+      description: Not Found
+      content: *ref_14
+    notFoundRelationship:
+      description: Not Found
+      content: *ref_15
+    unauthorized:
+      description: Unauthorized
+      content: *ref_5
+    notAcceptable:
+      description: Not Acceptable
+      content: *ref_6
+    internalServerError:
+      description: Internal Server Error
+      content: *ref_7
+    forbiddenDelete:
+      description: Forbidden
+      content: *ref_16
+    forbiddenCreateInvitation:
+      description: Forbidden
+      headers: *ref_17
+      content: *ref_18
+    forbiddenGetInvitations:
+      description: Forbidden
+      content: *ref_11
+    forbiddenGetRelationshipStatus:
+      description: Forbidden
+      content: *ref_19
+    badRequestCancelInvitation:
+      description: Bad Request
+      content: *ref_20
+    badRequestCreateInvitation:
+      description: Bad Request
+      content: *ref_21
+    badRequestGetRelationshipStatus:
+      description: Bad Request
+      content: *ref_22
+    badRequestGetInvitations:
+      description: Bad Request
+      content: *ref_10
+  schemas:
+    AgentsInvitationsITSARequest:
+      title: Agent Invitation Request for MTD-IT
+      required: *ref_23
+      type: object
+      properties: *ref_24
+    AgentsInvitationsVATRequest:
+      title: Agent Invitation Request for VAT
+      required: *ref_25
+      type: object
+      properties: *ref_26
+    CheckRelationshipVATRequest:
+      title: Check Status of Relationship Request for MTD-VAT
+      required: *ref_27
+      type: object
+      properties: *ref_28
+    CheckRelationshipITSARequest:
+      title: Check Status of Relationship Request for MTD-IT
+      required: *ref_29
+      type: object
+      properties: *ref_30
+    AgentsInvitationsResponse:
+      title: AgentsInvitationsResponse
+      required: *ref_8
+      type: object
+      properties: *ref_9
+    Links:
+      title: Links
+      required: *ref_31
+      type: object
+      properties: *ref_32
+      description: A link to the current resource.
