@@ -932,11 +932,11 @@ paths:
     put:
       tags:
         - Agents
-      summary: Delete an existing relationship
-      operationId: DeleteRelationship
+      summary: De-authorise an existing client relationship
+      operationId: DeauthoriseClient
       security:
         - userRestricted:
-            - write:sent-invitations
+            - write:relationships
       parameters:
         - name: arn
           in: path
@@ -959,7 +959,7 @@ paths:
           application/json:
             schema:
               oneOf:
-                - title: Delete Relationship Request for MTD-IT
+                - title: De-authorise client request for MTD-IT
                   required: &ref_27
                     - service
                     - clientType
@@ -993,7 +993,7 @@ paths:
                           type: string
                           enum: *ref_4
                           description: Only MTD-IT supports this field. Defaults to "main" if omitted.
-                - title: Delete Relationship Request for MTD-VAT
+                - title: De-authorise client request for MTD-VAT
                   required: &ref_29
                     - service
                     - clientType
@@ -1024,13 +1024,22 @@ paths:
                           type: string
                           pattern: ^[0-9]{1,9}$
             examples:
-              example-ITSA:
+              example-ITSA-main:
                 value:
                   service:
                     - MTD-IT
                   clientType: personal
                   clientIdType: ni
                   clientId: AA999999A
+                  agentType: main
+              example-ITSA-supporting:
+                value:
+                  service:
+                    - MTD-IT
+                  clientType: personal
+                  clientIdType: ni
+                  clientId: AA999999A
+                  agentType: supporting
               example-VAT:
                 value:
                   service:
@@ -1096,6 +1105,7 @@ components:
             read:sent-invitations: Grants read access
             read:check-relationship: Grants read access
             write:sent-invitations: Grants write access
+            write:relationships: Grants write access
             write:cancel-invitations: Grants write access
   responses:
     notFoundInvitation:
@@ -1149,13 +1159,13 @@ components:
       required: *ref_25
       type: object
       properties: *ref_26
-    DeleteRelationshipITSARequest:
-      title: Delete Relationship Request for MTD-IT
+    DeauthoriseClientITSARequest:
+      title: De-authorise client request for MTD-IT
       required: *ref_27
       type: object
       properties: *ref_28
-    DeleteRelationshipVATRequest:
-      title: Delete Relationship Request for MTD-VAT
+    DeauthoriseClientVATRequest:
+      title: De-authorise client request for MTD-VAT
       required: *ref_29
       type: object
       properties: *ref_30
