@@ -475,7 +475,9 @@ components:
     KnownFactRegistrationDate:
       title: VAT registration date
       type: string
-      pattern: yyyy-mm-dd
+      pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+      format: "date"
+
     AgentType:
       title: Agent type
       nullable: true
