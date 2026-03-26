@@ -138,38 +138,16 @@ paths:
             examples:
               example-ITSA:
                 value:
-                  service:
-                    - MTD-IT
-                  clientType: personal
-                  clientIdType: ni
-                  clientId: AA999999A
-                  knownFact: AA11 1AA
+                  $ref: ./examples/post-agency-invitations-itsa-example.json
               example-ITSA-main:
                 value:
-                  service:
-                    - MTD-IT
-                  clientType: personal
-                  clientIdType: ni
-                  clientId: AA999999A
-                  knownFact: AA11 1AA
-                  agentType: main
+                  $ref: ./examples/post-agency-invitations-itsa-main-example.json
               example-ITSA-supporting:
                 value:
-                  service:
-                    - MTD-IT
-                  clientType: personal
-                  clientIdType: ni
-                  clientId: AA999999A
-                  knownFact: AA11 1AA
-                  agentType: supporting
+                  $ref: ./examples/post-agency-invitations-itsa-supp-example.json
               example-VAT:
                 value:
-                  service:
-                    - MTD-VAT
-                  clientType: business
-                  clientIdType: vrn
-                  clientId: '101747696'
-                  knownFact: '2007-05-18'
+                  $ref: ./examples/post-agency-invitations-vat-example.json
         required: true
       responses:
         '204':
@@ -197,44 +175,34 @@ paths:
               examples:
                 serviceNotSupported:
                   value:
-                    code: SERVICE_NOT_SUPPORTED
-                    message: The service requested is not supported. Check the API documentation to find which services are supported.
+                    $ref: ./examples/errors/badReq_serviceNotSupported.json
                 invalidClientType:
                   value:
-                    code: CLIENT_TYPE_NOT_SUPPORTED
-                    message: The client type requested is not supported. Check the API documentation to find which client types are supported.
+                    $ref: ./examples/errors/badReq_clientTypeNotSupported.json
                 invalidClientId:
                   value:
-                    code: CLIENT_ID_FORMAT_INVALID
-                    message: Client identifier must be in the correct format. Check the API documentation to find the correct format.
+                    $ref: ./examples/errors/badReq_clientIdFormatInvalid.json
                 clientIdDoesNotMatchService:
                   value:
-                    code: CLIENT_ID_DOES_NOT_MATCH_SERVICE
-                    message: The type of client Identifier provided cannot be used with the requested service. Check the API documentation for details of the correct client identifiers to use.
+                    $ref: ./examples/errors/badReq_clientIdServiceMatchError.json
                 invalidPostcode:
                   value:
-                    code: POSTCODE_FORMAT_INVALID
-                    message: Postcode must be in the correct format. Check the API documentation to find the correct format.
+                    $ref: ./examples/errors/badReq_postcodeFormatInvalid.json
                 invalidVatRegistrationDate:
                   value:
-                    code: VAT_REG_DATE_FORMAT_INVALID
-                    message: VAT registration date must be in the correct format. Check the API documentation to find the correct format.
+                    $ref: ./examples/errors/badReq_vatRegDateFormatInvalid.json
                 unsupportedVersion:
                   value:
-                    code: BAD_REQUEST
-                    message: Missing or unsupported version number
+                    $ref: ./examples/errors/badReq_invalidVersionAcceptHeader.json
                 unsupportedContentType:
                   value:
-                    code: BAD_REQUEST
-                    message: Missing or unsupported content-type.
+                    $ref: ./examples/errors/badReq_unsupportedContentType.json
                 unsupportedAgentType:
                   value:
-                    code: AGENT_TYPE_NOT_SUPPORTED
-                    message: The agent type requested is not supported. Check the API documentation to find which agent types are supported.
+                    $ref: ./examples/errors/badReq_unsupportedAgentType.json
                 badRequest:
                   value:
-                    code: BAD_REQUEST
-                    message: Bad Request
+                    $ref: ./examples/errors/badReq.json
         '401':
           description: Unauthorized
           content: &ref_5
@@ -265,44 +233,34 @@ paths:
               examples:
                 clientRegistrationNotFound:
                   value:
-                    code: CLIENT_REGISTRATION_NOT_FOUND
-                    message: The details provided for this client do not match HMRC's records.
+                    $ref: ./examples/errors/forbidden_clientRegNotFound.json
                 postcodeNoMatch:
                   value:
-                    code: POSTCODE_DOES_NOT_MATCH
-                    message: The postcode provided does not match HMRC's record for the client.
+                    $ref: ./examples/errors/forbidden_postcodeNoMatch.json
                 vatRegistrationDateNoMatch:
                   value:
-                    code: VAT_REG_DATE_DOES_NOT_MATCH
-                    message: The VAT registration date provided does not match HMRC's record for the client.
+                    $ref: ./examples/errors/forbidden_vatRegDateNoMatch.json
                 duplicateAuthorisationRequest:
                   value:
-                    code: DUPLICATE_AUTHORISATION_REQUEST
-                    message: An authorisation request for this service has already been created and is awaiting the client’s response.
+                    $ref: ./examples/errors/forbidden_duplicateAuthReq.json
                 alreadyAuthorised:
                   value:
-                    code: ALREADY_AUTHORISED
-                    message: The client has already authorised the agent for this service. The agent does not need ask the client for this authorisation again.
+                    $ref: ./examples/errors/forbidden_alreadyAuthorised.json
                 notAnAgent:
                   value:
-                    code: NOT_AN_AGENT
-                    message: This user does not have a Government Gateway agent account. They need to create an Government Gateway agent account before they can use this service.
+                    $ref: ./examples/errors/forbidden_notAgent.json
                 agentNotSubscribed:
                   value:
-                    code: AGENT_NOT_SUBSCRIBED
-                    message: This agent needs to create an agent services account before they can use this service.
+                    $ref: ./examples/errors/forbidden_agentNotSubscribed.json
                 noPermissionOnAgency:
                   value:
-                    code: NO_PERMISSION_ON_AGENCY
-                    message: The user that is signed in cannot access this authorisation request. Their details do not match the agent business that created the authorisation request.
+                    $ref: ./examples/errors/forbidden_noPermissionOnAgency.json
                 vatClientInsolvent:
                   value:
-                    code: VAT_CLIENT_INSOLVENT
-                    message: The VAT registration number belongs to a customer that is insolvent.
+                    $ref: ./examples/errors/forbidden_vatClientInsolvent.json
                 alreadyProcessing:
                   value:
-                    code: ALREADY_BEING_PROCESSED
-                    message: More than one request received to create the same invitation.
+                    $ref: ./examples/errors/forbidden_alreadyProcessing.json
         '406':
           description: Not Acceptable
           content: &ref_6
@@ -314,12 +272,10 @@ paths:
               examples:
                 acceptHeaderMissing:
                   value:
-                    code: ACCEPT_HEADER_INVALID
-                    message: Missing 'Accept' header.
+                    $ref: ./examples/errors/notAcceptable_headerMissing.json
                 acceptHeaderInvalid:
                   value:
-                    code: ACCEPT_HEADER_INVALID
-                    message: Invalid 'Accept' header
+                    $ref: ./examples/errors/notAcceptable_headerInvalid.json
         '500':
           description: Internal Server Error
           content: &ref_7
@@ -331,8 +287,7 @@ paths:
               examples:
                 internalServerErrorExample:
                   value:
-                    code: INTERNAL_SERVER_ERROR
-                    message: Internal server error
+                    $ref: ./examples/errors/internalServerError.json
       deprecated: false
     get:
       tags:
@@ -443,27 +398,7 @@ paths:
               examples:
                 pending and responded:
                   value:
-                    - _links:
-                        self:
-                          href: /agents/AARN9999999/invitations/CS5AK7O8FPC43
-                      created: '2019-01-21T14:27:44.620'
-                      arn: AARN9999999
-                      service:
-                        - MTD-IT
-                      status: Pending
-                      expiresOn: 2019-02-11T00:00:00:000
-                      clientActionUrl: https://www.tax.service.gov.uk/agent-client-relationships/appoint-someone-to-deal-with-HMRC-for-you/12345678/agent-1/income-tax
-                      agentType: main
-                    - _links:
-                        self:
-                          href: /agents/AARN9999999/invitations/CS5AK7O8FPC43
-                      created: '2019-01-21T14:27:44.620'
-                      arn: AARN9999999
-                      service:
-                        - MTD-IT
-                      status: Accepted
-                      updated: '2019-01-21T14:27:44.620'
-                      agentType: supporting
+                    $ref: ./examples/get-agency-invitations-example.json
         '204':
           description: The agent has no authorisation requests in the last 30 days
         '400':
@@ -477,12 +412,10 @@ paths:
               examples:
                 unsupportedVersion:
                   value:
-                    code: BAD_REQUEST
-                    message: Missing or unsupported version number
+                    $ref: ./examples/errors/badReq_invalidVersionAcceptHeader.json
                 badRequest:
                   value:
-                    code: BAD_REQUEST
-                    message: Bad Request
+                    $ref: ./examples/errors/badReq.json
         '401':
           description: Unauthorized
           content: *ref_5
@@ -497,16 +430,13 @@ paths:
               examples:
                 notAnAgent:
                   value:
-                    code: NOT_AN_AGENT
-                    message: This user does not have a Government Gateway agent account. They need to create an Government Gateway agent account before they can use this service.
+                    $ref: ./examples/errors/forbidden_notAgent.json
                 agentNotSubscribed:
                   value:
-                    code: AGENT_NOT_SUBSCRIBED
-                    message: This agent needs to create an agent services account before they can use this service.
+                    $ref: ./examples/errors/forbidden_agentNotSubscribed.json
                 noPermissionOnAgency:
                   value:
-                    code: NO_PERMISSION_ON_AGENCY
-                    message: The user that is signed in cannot access this authorisation request. Their details do not match the agent business that created the authorisation request.
+                    $ref: ./examples/errors/forbidden_noPermissionOnAgency.json
         '406':
           description: Not Acceptable
           content: *ref_6
@@ -556,28 +486,10 @@ paths:
               examples:
                 pending:
                   value:
-                    _links:
-                      self:
-                        href: /agents/AARN9999999/invitations/CS5AK7O8FPC43
-                    created: '2019-01-21T14:27:44.620'
-                    expiresOn: '2019-02-11T00:00:00.00'
-                    arn: AARN9999999
-                    service:
-                      - MTD-IT
-                    status: Pending
-                    clientActionUrl: https://www.tax.service.gov.uk/agent-client-relationships/appoint-someone-to-deal-with-HMRC-for-you/12345678/agent-1/income-tax
-                    agentType: main
+                    $ref: ./examples/get-agency-invitation-pending-example.json
                 responded:
                   value:
-                    _links:
-                      self:
-                        href: /agents/AARN9999999/invitations/CS5AK7O8FPC43
-                    created: '2019-01-21T14:27:44.620'
-                    updated: '2019-01-21T14:27:44.620'
-                    arn: AARN9999999
-                    service:
-                      - MTD-VAT
-                    status: Accepted
+                    $ref: ./examples/get-agency-invitation-responded-example.json
         '400':
           description: Bad Request
           content: *ref_10
@@ -652,12 +564,10 @@ paths:
               examples:
                 unsupportedVersion:
                   value:
-                    code: BAD_REQUEST
-                    message: Missing or unsupported version number
+                    $ref: ./examples/errors/badReq_invalidVersionAcceptHeader.json
                 badRequest:
                   value:
-                    code: BAD_REQUEST
-                    message: Bad Request
+                    $ref: ./examples/errors/badReq.json
         '401':
           description: Unauthorized
           content: *ref_5
@@ -672,20 +582,16 @@ paths:
               examples:
                 invalidInvitationStatus:
                   value:
-                    code: INVALID_INVITATION_STATUS
-                    message: This authorisation request cannot be cancelled as the client has already responded to the request, or the request has expired.
+                    $ref: ./examples/errors/forbidden_invalidInvitationStatus.json
                 notAnAgent:
                   value:
-                    code: NOT_AN_AGENT
-                    message: This user does not have a Government Gateway agent account. They need to create an Government Gateway agent account before they can use this service.
+                    $ref: ./examples/errors/forbidden_notAgent.json
                 agentNotSubscribed:
                   value:
-                    code: AGENT_NOT_SUBSCRIBED
-                    message: This agent needs to create an agent services account before they can use this service.
+                    $ref: ./examples/errors/forbidden_agentNotSubscribed.json
                 noPermissionOnAgency:
                   value:
-                    code: NO_PERMISSION_ON_AGENCY
-                    message: The user that is signed in cannot access this authorisation request. Their details do not match the agent business that created the authorisation request.
+                    $ref: ./examples/errors/forbidden_noPermissionOnAgency.json
         '404':
           description: Not Found
           content: *ref_14
@@ -791,34 +697,16 @@ paths:
             examples:
               example-ITSA:
                 value:
-                  service:
-                    - MTD-IT
-                  clientIdType: ni
-                  clientId: AA999999A
-                  knownFact: AA11 1AA
+                  $ref: ./examples/post-agency-check-relationship-itsa-example.json
               example-ITSA-main:
                 value:
-                  service:
-                    - MTD-IT
-                  clientIdType: ni
-                  clientId: AA999999A
-                  knownFact: AA11 1AA
-                  agentType: main
+                  $ref: ./examples/post-agency-check-relationship-itsa-main-example.json
               example-ITSA-supporting:
                 value:
-                  service:
-                    - MTD-IT
-                  clientIdType: ni
-                  clientId: AA999999A
-                  knownFact: AA11 1AA
-                  agentType: supporting
+                  $ref: ./examples/post-agency-check-relationship-itsa-supp-example.json
               example-VAT:
                 value:
-                  service:
-                    - MTD-VAT
-                  clientIdType: vrn
-                  clientId: '101747696'
-                  knownFact: '2007-05-18'
+                  $ref: ./examples/post-agency-check-relationship-vat-example.json
         required: true
       responses:
         '204':
@@ -834,40 +722,31 @@ paths:
               examples:
                 serviceNotSupported:
                   value:
-                    code: SERVICE_NOT_SUPPORTED
-                    message: The service requested is not supported. Check the API documentation to find which services are supported.
+                    $ref: ./examples/errors/badReq_serviceNotSupported.json
                 invalidClientId:
                   value:
-                    code: CLIENT_ID_FORMAT_INVALID
-                    message: Client identifier must be in the correct format. Check the API documentation to find the correct format.
+                    $ref: ./examples/errors/badReq_clientIdFormatInvalid.json
                 clientIdDoesNotMatchService:
                   value:
-                    code: CLIENT_ID_DOES_NOT_MATCH_SERVICE
-                    message: The type of client Identifier provided cannot be used with the requested service. Check the API documentation for details of the correct client identifiers to use.
+                    $ref: ./examples/errors/badReq_clientIdServiceMatchError.json
                 invalidPostcode:
                   value:
-                    code: POSTCODE_FORMAT_INVALID
-                    message: Postcode must be in the correct format. Check the API documentation to find the correct format.
+                    $ref: ./examples/errors/badReq_postcodeFormatInvalid.json
                 invalidVatRegistrationDate:
                   value:
-                    code: VAT_REG_DATE_FORMAT_INVALID
-                    message: VAT registration date must be in the correct format. Check the API documentation to find the correct format.
+                    $ref: ./examples/errors/badReq_vatRegDateFormatInvalid.json
                 unsupportedVersion:
                   value:
-                    code: BAD_REQUEST
-                    message: Missing or unsupported version number
+                    $ref: ./examples/errors/badReq_invalidVersionAcceptHeader.json
                 unsupportedContentType:
                   value:
-                    code: BAD_REQUEST
-                    message: Missing or unsupported content-type.
+                    $ref: ./examples/errors/badReq_unsupportedContentType.json
                 unsupportedAgentType:
                   value:
-                    code: AGENT_TYPE_NOT_SUPPORTED
-                    message: The agent type requested is not supported. Check the API documentation to find which agent types are supported.
+                    $ref: ./examples/errors/badReq_unsupportedAgentType.json
                 badRequest:
                   value:
-                    code: BAD_REQUEST
-                    message: Bad Request
+                    $ref: ./examples/errors/badReq.json
         '401':
           description: Unauthorized
           content: *ref_5
@@ -882,32 +761,25 @@ paths:
               examples:
                 clientRegistrationNotFound:
                   value:
-                    code: CLIENT_REGISTRATION_NOT_FOUND
-                    message: The details provided for this client do not match HMRC's records.
+                    $ref: ./examples/errors/forbidden_clientRegNotFound.json
                 postcodeNoMatch:
                   value:
-                    code: POSTCODE_DOES_NOT_MATCH
-                    message: The postcode provided does not match HMRC's record for the client.
+                    $ref: ./examples/errors/forbidden_postcodeNoMatch.json
                 vatRegistrationDateNoMatch:
                   value:
-                    code: VAT_REG_DATE_DOES_NOT_MATCH
-                    message: The VAT registration date provided does not match HMRC's record for the client.
+                    $ref: ./examples/errors/forbidden_vatRegDateNoMatch.json
                 notAnAgent:
                   value:
-                    code: NOT_AN_AGENT
-                    message: This user does not have a Government Gateway agent account. They need to create an Government Gateway agent account before they can use this service.
+                    $ref: ./examples/errors/forbidden_notAgent.json
                 agentNotSubscribed:
                   value:
-                    code: AGENT_NOT_SUBSCRIBED
-                    message: This agent needs to create an agent services account before they can use this service.
+                    $ref: ./examples/errors/forbidden_agentNotSubscribed.json
                 noPermissionOnAgency:
                   value:
-                    code: NO_PERMISSION_ON_AGENCY
-                    message: The user that is signed in cannot access this authorisation request. Their details do not match the agent business that created the authorisation request.
+                    $ref: ./examples/errors/forbidden_noPermissionOnAgency.json
                 vatClientInsolvent:
                   value:
-                    code: VAT_CLIENT_INSOLVENT
-                    message: The VAT registration number belongs to a customer that is insolvent.
+                    $ref: ./examples/errors/forbidden_vatClientInsolvent.json
         '404':
           description: Not Found
           content: &ref_16
@@ -1072,16 +944,13 @@ paths:
                     message: The specified relationship does not exist.
                 notAnAgent:
                   value:
-                    code: NOT_AN_AGENT
-                    message: This user does not have a Government Gateway agent account. They need to create an Government Gateway agent account before they can use this service.
+                    $ref: ./examples/errors/forbidden_notAgent.json
                 agentNotSubscribed:
                   value:
-                    code: AGENT_NOT_SUBSCRIBED
-                    message: This agent needs to create an agent services account before they can use this service.
+                    $ref: ./examples/errors/forbidden_agentNotSubscribed.json
                 noPermissionOnAgency:
                   value:
-                    code: NO_PERMISSION_ON_AGENCY
-                    message: The user that is signed in cannot access this authorisation request. Their details do not match the agent business that created the authorisation request.
+                    $ref: ./examples/errors/forbidden_noPermissionOnAgency.json
         '406':
           description: Not Acceptable
           content: *ref_6
