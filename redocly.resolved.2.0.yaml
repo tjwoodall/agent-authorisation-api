@@ -47,7 +47,7 @@ paths:
         - name: Content-Type
           in: header
           description: The media type of the request body.
-          schema: &ref_13
+          schema: &ref_17
             type: string
             enum:
               - application/json
@@ -58,18 +58,26 @@ paths:
             schema:
               oneOf:
                 - title: Agent Invitation Request for MTD-IT
-                  required: &ref_23
+                  required: &ref_27
                     - service
                     - clientType
                     - clientIdType
                     - clientId
                     - knownFact
                   type: object
-                  properties: &ref_24
+                  properties: &ref_28
                     service:
                       allOf:
                         - title: MTD-IT
-                          type: string
+                          type: array
+                          minItems: 1
+                          maxItems: 1
+                          items: &ref_4
+                            type: string
+                            enum:
+                              - MTD-IT
+                          example: &ref_5
+                            - MTD-IT
                           description: MTD IT service
                     clientType:
                       allOf:
@@ -95,23 +103,31 @@ paths:
                         - title: Agent type
                           nullable: true
                           type: string
-                          enum: &ref_4
+                          enum: &ref_8
                             - main
                             - supporting
                           description: Only MTD-IT supports this field. Defaults to "main" if omitted.
                 - title: Agent Invitation Request for VAT
-                  required: &ref_25
+                  required: &ref_29
                     - service
                     - clientType
                     - clientIdType
                     - clientId
                     - knownFact
                   type: object
-                  properties: &ref_26
+                  properties: &ref_30
                     service:
                       allOf:
                         - title: MTD-VAT
-                          type: string
+                          type: array
+                          minItems: 1
+                          maxItems: 1
+                          items: &ref_6
+                            type: string
+                            enum:
+                              - MTD-VAT
+                          example: &ref_7
+                            - MTD-VAT
                           description: MTD VAT service
                     clientType:
                       oneOf:
@@ -160,7 +176,7 @@ paths:
                 example: /agents/AARN9999999/invitations/CS5AK7O8FPC43
         '400':
           description: Bad Request
-          content: &ref_22
+          content: &ref_26
             application/json:
               schema:
                 type: object
@@ -205,7 +221,7 @@ paths:
                     $ref: ./examples/errors/badReq.json
         '401':
           description: Unauthorized
-          content: &ref_5
+          content: &ref_9
             application/json:
               schema:
                 type: object
@@ -218,13 +234,13 @@ paths:
                     message: Bearer token is missing or not authorized.
         '403':
           description: Forbidden
-          headers: &ref_18
+          headers: &ref_22
             Location:
               description: Location of the authorisation request. (Only returned with duplicateAuthorisationRequest)
               schema:
                 type: string
                 example: /agents/AARN9999999/invitations/CS5AK7O8FPC43
-          content: &ref_19
+          content: &ref_23
             application/json:
               schema:
                 type: object
@@ -263,7 +279,7 @@ paths:
                     $ref: ./examples/errors/forbidden_alreadyProcessing.json
         '406':
           description: Not Acceptable
-          content: &ref_6
+          content: &ref_10
             application/json:
               schema:
                 type: object
@@ -278,7 +294,7 @@ paths:
                     $ref: ./examples/errors/notAcceptable_headerInvalid.json
         '500':
           description: Internal Server Error
-          content: &ref_7
+          content: &ref_11
             application/json:
               schema:
                 type: object
@@ -318,21 +334,21 @@ paths:
                 type: array
                 items:
                   title: AgentsInvitationsResponse
-                  required: &ref_8
+                  required: &ref_12
                     - _links
                     - service
                     - arn
                     - created
                     - status
                   type: object
-                  properties: &ref_9
+                  properties: &ref_13
                     _links:
                       allOf:
                         - title: Links
-                          required: &ref_35
+                          required: &ref_39
                             - self
                           type: object
-                          properties: &ref_36
+                          properties: &ref_40
                             self:
                               allOf:
                                 - title: Self
@@ -346,16 +362,21 @@ paths:
                           description: A link to the current resource.
                         - description: The link to the invitation
                     service:
-                      maxItems: 1
-                      type: array
-                      items:
-                        oneOf:
-                          - title: MTD-IT
-                            type: string
-                            description: MTD IT service
-                          - title: MTD-VAT
-                            type: string
-                            description: MTD VAT service
+                      oneOf:
+                        - title: MTD-IT
+                          type: array
+                          minItems: 1
+                          maxItems: 1
+                          items: *ref_4
+                          example: *ref_5
+                          description: MTD IT service
+                        - title: MTD-VAT
+                          type: array
+                          minItems: 1
+                          maxItems: 1
+                          items: *ref_6
+                          example: *ref_7
+                          description: MTD VAT service
                       description: The service to which this invitation refers
                     arn:
                       type: string
@@ -392,7 +413,7 @@ paths:
                         - title: Agent type
                           nullable: true
                           type: string
-                          enum: *ref_4
+                          enum: *ref_8
                           description: Only MTD-IT supports this field. Defaults to "main" if omitted.
                 description: Returns all authorisation requests for the last 30 days.
               examples:
@@ -403,7 +424,7 @@ paths:
           description: The agent has no authorisation requests in the last 30 days
         '400':
           description: Bad Request
-          content: &ref_10
+          content: &ref_14
             application/json:
               schema:
                 type: object
@@ -418,10 +439,10 @@ paths:
                     $ref: ./examples/errors/badReq.json
         '401':
           description: Unauthorized
-          content: *ref_5
+          content: *ref_9
         '403':
           description: Forbidden
-          content: &ref_11
+          content: &ref_15
             application/json:
               schema:
                 type: object
@@ -439,10 +460,10 @@ paths:
                     $ref: ./examples/errors/forbidden_noPermissionOnAgency.json
         '406':
           description: Not Acceptable
-          content: *ref_6
+          content: *ref_10
         '500':
           description: Internal Server Error
-          content: *ref_7
+          content: *ref_11
       deprecated: false
   /agents/{arn}/invitations/{invitationId}:
     get:
@@ -465,7 +486,7 @@ paths:
           description: A unique authorisation request ID
           required: true
           style: simple
-          schema: &ref_12
+          schema: &ref_16
             type: string
             example: CS5AK7O8FPC43
         - name: Accept
@@ -480,9 +501,9 @@ paths:
             application/json:
               schema:
                 title: AgentsInvitationsResponse
-                required: *ref_8
+                required: *ref_12
                 type: object
-                properties: *ref_9
+                properties: *ref_13
               examples:
                 pending:
                   value:
@@ -492,16 +513,16 @@ paths:
                     $ref: ./examples/get-agency-invitation-responded-example.json
         '400':
           description: Bad Request
-          content: *ref_10
+          content: *ref_14
         '401':
           description: Unauthorized
-          content: *ref_5
+          content: *ref_9
         '403':
           description: Forbidden
-          content: *ref_11
+          content: *ref_15
         '404':
           description: Not Found
-          content: &ref_14
+          content: &ref_18
             application/json:
               schema:
                 type: object
@@ -514,10 +535,10 @@ paths:
                     message: The authorisation request cannot be found.
         '406':
           description: Not Acceptable
-          content: *ref_6
+          content: *ref_10
         '500':
           description: Internal Server Error
-          content: *ref_7
+          content: *ref_11
       deprecated: false
     delete:
       tags:
@@ -539,7 +560,7 @@ paths:
           description: A unique authorisation request ID
           required: true
           style: simple
-          schema: *ref_12
+          schema: *ref_16
         - name: Accept
           in: header
           description: Specifies the response format and the [version](/api-documentation/docs/reference-guide#versioning) of the API to be used.
@@ -548,14 +569,14 @@ paths:
         - name: Content-Type
           in: header
           description: The media type of the request body.
-          schema: *ref_13
+          schema: *ref_17
           required: true
       responses:
         '204':
           description: The authorisation request has been cancelled
         '400':
           description: Bad Request
-          content: &ref_21
+          content: &ref_25
             application/json:
               schema:
                 type: object
@@ -570,10 +591,10 @@ paths:
                     $ref: ./examples/errors/badReq.json
         '401':
           description: Unauthorized
-          content: *ref_5
+          content: *ref_9
         '403':
           description: Forbidden
-          content: &ref_17
+          content: &ref_21
             application/json:
               schema:
                 type: object
@@ -594,13 +615,13 @@ paths:
                     $ref: ./examples/errors/forbidden_noPermissionOnAgency.json
         '404':
           description: Not Found
-          content: *ref_14
+          content: *ref_18
         '406':
           description: Not Acceptable
-          content: *ref_6
+          content: *ref_10
         '500':
           description: Internal Server Error
-          content: *ref_7
+          content: *ref_11
       deprecated: false
   /agents/{arn}/relationships:
     post:
@@ -626,7 +647,7 @@ paths:
         - name: Content-Type
           in: header
           description: The media type of the request body.
-          schema: *ref_13
+          schema: *ref_17
           required: true
       requestBody:
         content:
@@ -634,17 +655,21 @@ paths:
             schema:
               oneOf:
                 - title: Check Status of Relationship Request for MTD-VAT
-                  required: &ref_31
+                  required: &ref_35
                     - service
                     - clientIdType
                     - clientId
                     - knownFact
                   type: object
-                  properties: &ref_32
+                  properties: &ref_36
                     service:
                       allOf:
                         - title: MTD-VAT
-                          type: string
+                          type: array
+                          minItems: 1
+                          maxItems: 1
+                          items: *ref_6
+                          example: *ref_7
                           description: MTD VAT service
                     clientIdType:
                       allOf:
@@ -661,17 +686,21 @@ paths:
                           type: string
                           pattern: yyyy-mm-dd
                 - title: Check Status of Relationship Request for MTD-IT
-                  required: &ref_33
+                  required: &ref_37
                     - service
                     - clientIdType
                     - clientId
                     - knownFact
                   type: object
-                  properties: &ref_34
+                  properties: &ref_38
                     service:
                       allOf:
                         - title: MTD-IT
-                          type: string
+                          type: array
+                          minItems: 1
+                          maxItems: 1
+                          items: *ref_4
+                          example: *ref_5
                           description: MTD IT service
                     clientIdType:
                       allOf:
@@ -692,7 +721,7 @@ paths:
                         - title: Agent type
                           nullable: true
                           type: string
-                          enum: *ref_4
+                          enum: *ref_8
                           description: Only MTD-IT supports this field. Defaults to "main" if omitted.
             examples:
               example-ITSA:
@@ -713,7 +742,7 @@ paths:
           description: The agent is authorised to act for the client.
         '400':
           description: Bad Request
-          content: &ref_15
+          content: &ref_19
             application/json:
               schema:
                 type: object
@@ -749,10 +778,10 @@ paths:
                     $ref: ./examples/errors/badReq.json
         '401':
           description: Unauthorized
-          content: *ref_5
+          content: *ref_9
         '403':
           description: Forbidden
-          content: &ref_20
+          content: &ref_24
             application/json:
               schema:
                 type: object
@@ -782,7 +811,7 @@ paths:
                     $ref: ./examples/errors/forbidden_vatClientInsolvent.json
         '404':
           description: Not Found
-          content: &ref_16
+          content: &ref_20
             application/json:
               schema:
                 type: object
@@ -795,10 +824,10 @@ paths:
                     message: Relationship is inactive. Agent is not authorised to act for this client.
         '406':
           description: Not Acceptable
-          content: *ref_6
+          content: *ref_10
         '500':
           description: Internal Server Error
-          content: *ref_7
+          content: *ref_11
       deprecated: false
   /agents/{arn}/deauthorise-client:
     put:
@@ -824,7 +853,7 @@ paths:
         - name: Content-Type
           in: header
           description: The media type of the request body.
-          schema: *ref_13
+          schema: *ref_17
           required: true
       requestBody:
         content:
@@ -832,17 +861,21 @@ paths:
             schema:
               oneOf:
                 - title: De-authorise client request for MTD-IT
-                  required: &ref_27
+                  required: &ref_31
                     - service
                     - clientType
                     - clientIdType
                     - clientId
                   type: object
-                  properties: &ref_28
+                  properties: &ref_32
                     service:
                       allOf:
                         - title: MTD-IT
-                          type: string
+                          type: array
+                          minItems: 1
+                          maxItems: 1
+                          items: *ref_4
+                          example: *ref_5
                           description: MTD IT service
                     clientType:
                       allOf:
@@ -863,20 +896,24 @@ paths:
                         - title: Agent type
                           nullable: true
                           type: string
-                          enum: *ref_4
+                          enum: *ref_8
                           description: Only MTD-IT supports this field. Defaults to "main" if omitted.
                 - title: De-authorise client request for MTD-VAT
-                  required: &ref_29
+                  required: &ref_33
                     - service
                     - clientType
                     - clientIdType
                     - clientId
                   type: object
-                  properties: &ref_30
+                  properties: &ref_34
                     service:
                       allOf:
                         - title: MTD-VAT
-                          type: string
+                          type: array
+                          minItems: 1
+                          maxItems: 1
+                          items: *ref_6
+                          example: *ref_7
                           description: MTD VAT service
                     clientType:
                       oneOf:
@@ -898,21 +935,24 @@ paths:
             examples:
               example-ITSA-main:
                 value:
-                  service: MTD-IT
+                  service:
+                    - MTD-IT
                   clientType: personal
                   clientIdType: ni
                   clientId: AA999999A
                   agentType: main
               example-ITSA-supporting:
                 value:
-                  service: MTD-IT
+                  service:
+                    - MTD-IT
                   clientType: personal
                   clientIdType: ni
                   clientId: AA999999A
                   agentType: supporting
               example-VAT:
                 value:
-                  service: MTD-VAT
+                  service:
+                    - MTD-VAT
                   clientType: business
                   clientIdType: vrn
                   clientId: '101747696'
@@ -922,10 +962,10 @@ paths:
           description: The relationship has been removed.
         '400':
           description: Bad Request
-          content: *ref_15
+          content: *ref_19
         '401':
           description: Unauthorized
-          content: *ref_5
+          content: *ref_9
         '403':
           description: Forbidden
           content:
@@ -950,10 +990,10 @@ paths:
                     $ref: ./examples/errors/forbidden_noPermissionOnAgency.json
         '406':
           description: Not Acceptable
-          content: *ref_6
+          content: *ref_10
         '500':
           description: Internal Server Error
-          content: *ref_7
+          content: *ref_11
       deprecated: false
 components:
   securitySchemes:
@@ -976,83 +1016,83 @@ components:
   responses:
     notFoundInvitation:
       description: Not Found
-      content: *ref_14
+      content: *ref_18
     notFoundRelationship:
       description: Not Found
-      content: *ref_16
+      content: *ref_20
     unauthorized:
       description: Unauthorized
-      content: *ref_5
+      content: *ref_9
     notAcceptable:
       description: Not Acceptable
-      content: *ref_6
+      content: *ref_10
     internalServerError:
       description: Internal Server Error
-      content: *ref_7
+      content: *ref_11
     forbiddenDelete:
       description: Forbidden
-      content: *ref_17
+      content: *ref_21
     forbiddenCreateInvitation:
       description: Forbidden
-      headers: *ref_18
-      content: *ref_19
+      headers: *ref_22
+      content: *ref_23
     forbiddenGetInvitations:
       description: Forbidden
-      content: *ref_11
+      content: *ref_15
     forbiddenGetRelationshipStatus:
       description: Forbidden
-      content: *ref_20
+      content: *ref_24
     badRequestCancelInvitation:
       description: Bad Request
-      content: *ref_21
+      content: *ref_25
     badRequestCreateInvitation:
       description: Bad Request
-      content: *ref_22
+      content: *ref_26
     badRequestGetRelationshipStatus:
       description: Bad Request
-      content: *ref_15
+      content: *ref_19
     badRequestGetInvitations:
       description: Bad Request
-      content: *ref_10
+      content: *ref_14
   schemas:
     AgentsInvitationsITSARequest:
       title: Agent Invitation Request for MTD-IT
-      required: *ref_23
-      type: object
-      properties: *ref_24
-    AgentsInvitationsVATRequest:
-      title: Agent Invitation Request for VAT
-      required: *ref_25
-      type: object
-      properties: *ref_26
-    DeauthoriseClientITSARequest:
-      title: De-authorise client request for MTD-IT
       required: *ref_27
       type: object
       properties: *ref_28
-    DeauthoriseClientVATRequest:
-      title: De-authorise client request for MTD-VAT
+    AgentsInvitationsVATRequest:
+      title: Agent Invitation Request for VAT
       required: *ref_29
       type: object
       properties: *ref_30
-    CheckRelationshipVATRequest:
-      title: Check Status of Relationship Request for MTD-VAT
+    DeauthoriseClientITSARequest:
+      title: De-authorise client request for MTD-IT
       required: *ref_31
       type: object
       properties: *ref_32
-    CheckRelationshipITSARequest:
-      title: Check Status of Relationship Request for MTD-IT
+    DeauthoriseClientVATRequest:
+      title: De-authorise client request for MTD-VAT
       required: *ref_33
       type: object
       properties: *ref_34
-    AgentsInvitationsResponse:
-      title: AgentsInvitationsResponse
-      required: *ref_8
-      type: object
-      properties: *ref_9
-    Links:
-      title: Links
+    CheckRelationshipVATRequest:
+      title: Check Status of Relationship Request for MTD-VAT
       required: *ref_35
       type: object
       properties: *ref_36
+    CheckRelationshipITSARequest:
+      title: Check Status of Relationship Request for MTD-IT
+      required: *ref_37
+      type: object
+      properties: *ref_38
+    AgentsInvitationsResponse:
+      title: AgentsInvitationsResponse
+      required: *ref_12
+      type: object
+      properties: *ref_13
+    Links:
+      title: Links
+      required: *ref_39
+      type: object
+      properties: *ref_40
       description: A link to the current resource.
