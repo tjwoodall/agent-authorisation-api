@@ -78,17 +78,30 @@ paths:
                           description: A link to the current resource.
                       description: The link to the invitation
                     service:
-                      maxItems: 1
-                      type: array
                       description: The service to which this invitation refers
-                      items:
-                        oneOf:
-                        - title: MTD-IT
+                      oneOf:
+                      - title: MTD-IT
+                        maxItems: 1
+                        minItems: 1
+                        type: array
+                        description: MTD IT service
+                        example:
+                        - MTD-IT
+                        items:
                           type: string
-                          description: MTD IT service
-                        - title: MTD-VAT
+                          enum:
+                          - MTD-IT
+                      - title: MTD-VAT
+                        maxItems: 1
+                        minItems: 1
+                        type: array
+                        description: MTD VAT service
+                        example:
+                        - MTD-VAT
+                        items:
                           type: string
-                          description: MTD VAT service
+                          enum:
+                          - MTD-VAT
                     arn:
                       type: string
                       description: The Agent Registration Number for the calling agency
@@ -297,8 +310,12 @@ paths:
                 type: object
                 properties:
                   service:
-                    type: string
+                    maxItems: 1
+                    minItems: 1
+                    type: array
                     description: MTD IT service
+                    example:
+                    - - MTD-IT
                   clientType:
                     type: string
                     description: An individual or sole trader
@@ -329,8 +346,12 @@ paths:
                 type: object
                 properties:
                   service:
-                    type: string
+                    maxItems: 1
+                    minItems: 1
+                    type: array
                     description: MTD VAT service
+                    example:
+                    - - MTD-VAT
                   clientType:
                     oneOf:
                     - title: personal
@@ -601,17 +622,30 @@ paths:
                         description: A link to the current resource.
                     description: The link to the invitation
                   service:
-                    maxItems: 1
-                    type: array
                     description: The service to which this invitation refers
-                    items:
-                      oneOf:
-                      - title: MTD-IT
+                    oneOf:
+                    - title: MTD-IT
+                      maxItems: 1
+                      minItems: 1
+                      type: array
+                      description: MTD IT service
+                      example:
+                      - MTD-IT
+                      items:
                         type: string
-                        description: MTD IT service
-                      - title: MTD-VAT
+                        enum:
+                        - MTD-IT
+                    - title: MTD-VAT
+                      maxItems: 1
+                      minItems: 1
+                      type: array
+                      description: MTD VAT service
+                      example:
+                      - MTD-VAT
+                      items:
                         type: string
-                        description: MTD VAT service
+                        enum:
+                        - MTD-VAT
                   arn:
                     type: string
                     description: The Agent Registration Number for the calling agency
@@ -1015,8 +1049,12 @@ paths:
                 type: object
                 properties:
                   service:
-                    type: string
+                    maxItems: 1
+                    minItems: 1
+                    type: array
                     description: MTD VAT service
+                    example:
+                    - - MTD-VAT
                   clientIdType:
                     type: string
                   clientId:
@@ -1034,8 +1072,12 @@ paths:
                 type: object
                 properties:
                   service:
-                    type: string
+                    maxItems: 1
+                    minItems: 1
+                    type: array
                     description: MTD IT service
+                    example:
+                    - - MTD-IT
                   clientIdType:
                     type: string
                   clientId:
@@ -1282,8 +1324,12 @@ paths:
                 type: object
                 properties:
                   service:
-                    type: string
+                    maxItems: 1
+                    minItems: 1
+                    type: array
                     description: MTD IT service
+                    example:
+                    - - MTD-IT
                   clientType:
                     type: string
                     description: An individual or sole trader
@@ -1310,8 +1356,12 @@ paths:
                 type: object
                 properties:
                   service:
-                    type: string
+                    maxItems: 1
+                    minItems: 1
+                    type: array
                     description: MTD VAT service
+                    example:
+                    - - MTD-VAT
                   clientType:
                     oneOf:
                     - title: personal
@@ -1328,21 +1378,24 @@ paths:
             examples:
               example-ITSA-main:
                 value:
-                  service: MTD-IT
+                  service:
+                  - MTD-IT
                   clientType: personal
                   clientIdType: ni
                   clientId: AA999999A
                   agentType: main
               example-ITSA-supporting:
                 value:
-                  service: MTD-IT
+                  service:
+                  - MTD-IT
                   clientType: personal
                   clientIdType: ni
                   clientId: AA999999A
                   agentType: supporting
               example-VAT:
                 value:
-                  service: MTD-VAT
+                  service:
+                  - MTD-VAT
                   clientType: business
                   clientIdType: vrn
                   clientId: "101747696"
@@ -1505,8 +1558,12 @@ components:
       type: object
       properties:
         service:
-          type: string
+          maxItems: 1
+          minItems: 1
+          type: array
           description: MTD IT service
+          example:
+          - - MTD-IT
         clientType:
           type: string
           description: An individual or sole trader
@@ -1537,8 +1594,12 @@ components:
       type: object
       properties:
         service:
-          type: string
+          maxItems: 1
+          minItems: 1
+          type: array
           description: MTD VAT service
+          example:
+          - - MTD-VAT
         clientType:
           oneOf:
           - title: personal
@@ -1565,8 +1626,12 @@ components:
       type: object
       properties:
         service:
-          type: string
+          maxItems: 1
+          minItems: 1
+          type: array
           description: MTD IT service
+          example:
+          - - MTD-IT
         clientType:
           type: string
           description: An individual or sole trader
@@ -1593,8 +1658,12 @@ components:
       type: object
       properties:
         service:
-          type: string
+          maxItems: 1
+          minItems: 1
+          type: array
           description: MTD VAT service
+          example:
+          - - MTD-VAT
         clientType:
           oneOf:
           - title: personal
@@ -1618,8 +1687,12 @@ components:
       type: object
       properties:
         service:
-          type: string
+          maxItems: 1
+          minItems: 1
+          type: array
           description: MTD VAT service
+          example:
+          - - MTD-VAT
         clientIdType:
           type: string
         clientId:
@@ -1638,8 +1711,12 @@ components:
       type: object
       properties:
         service:
-          type: string
+          maxItems: 1
+          minItems: 1
+          type: array
           description: MTD IT service
+          example:
+          - - MTD-IT
         clientIdType:
           type: string
         clientId:
@@ -1711,17 +1788,30 @@ components:
               description: A link to the current resource.
           description: The link to the invitation
         service:
-          maxItems: 1
-          type: array
           description: The service to which this invitation refers
-          items:
-            oneOf:
-            - title: MTD-IT
+          oneOf:
+          - title: MTD-IT
+            maxItems: 1
+            minItems: 1
+            type: array
+            description: MTD IT service
+            example:
+            - MTD-IT
+            items:
               type: string
-              description: MTD IT service
-            - title: MTD-VAT
+              enum:
+              - MTD-IT
+          - title: MTD-VAT
+            maxItems: 1
+            minItems: 1
+            type: array
+            description: MTD VAT service
+            example:
+            - MTD-VAT
+            items:
               type: string
-              description: MTD VAT service
+              enum:
+              - MTD-VAT
         arn:
           type: string
           description: The Agent Registration Number for the calling agency
@@ -1761,12 +1851,28 @@ components:
           - supporting
     VATService:
       title: MTD-VAT
-      type: string
+      maxItems: 1
+      minItems: 1
+      type: array
       description: MTD VAT service
+      example:
+      - MTD-VAT
+      items:
+        type: string
+        enum:
+        - MTD-VAT
     ITSAService:
       title: MTD-IT
-      type: string
+      maxItems: 1
+      minItems: 1
+      type: array
       description: MTD IT service
+      example:
+      - MTD-IT
+      items:
+        type: string
+        enum:
+        - MTD-IT
     ClientTypePersonal:
       title: personal
       type: string
