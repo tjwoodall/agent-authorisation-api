@@ -47,7 +47,7 @@ components:
           - application/json
 
   securitySchemes:
-    userRestricted:
+    User-Restricted:
       type: oauth2
       description: >-
         HMRC supports OAuth 2.0 for authenticating user-restricted API requests
@@ -525,7 +525,7 @@ paths:
         returned as an empty array.
       operationId: getInvitationsV3
       security:
-        - userRestricted:
+        - User-Restricted:
             - read:sent-invitations
       parameters:
         - $ref: '#/components/parameters/arnParameter'
@@ -558,7 +558,7 @@ paths:
         after 21 days.
       operationId: createInvitationV3
       security:
-        - userRestricted:
+        - User-Restricted:
             - write:sent-invitations
       parameters:
         - $ref: '#/components/parameters/arnParameter'
