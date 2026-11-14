@@ -80,7 +80,7 @@ components:
           - application/json
 
   securitySchemes:
-    userRestricted:
+    User-Restricted:
       type: oauth2
       description: >-
         HMRC supports OAuth 2.0 for authenticating user-restricted API requests
@@ -734,7 +734,7 @@ paths:
         returned as an empty array.
       operationId: getInvitationsV3
       security:
-        - userRestricted:
+        - User-Restricted:
             - read:sent-invitations
       parameters:
         - $ref: '#/components/parameters/arnParameter'
@@ -767,7 +767,7 @@ paths:
         after 21 days.
       operationId: createInvitationV3
       security:
-        - userRestricted:
+        - User-Restricted:
             - write:sent-invitations
       parameters:
         - $ref: '#/components/parameters/arnParameter'
@@ -862,7 +862,7 @@ paths:
       description: Returns a single authorisation request for the calling agency.
       operationId: getInvitationByIdV3
       security:
-        - userRestricted:
+        - User-Restricted:
             - read:sent-invitations
       parameters:
         - $ref: '#/components/parameters/arnParameter'
@@ -896,7 +896,7 @@ paths:
         Content-Type header is not required.
       operationId: cancelInvitationV3
       security:
-        - userRestricted:
+        - User-Restricted:
             - write:cancel-invitations
       parameters:
         - $ref: '#/components/parameters/arnParameter'
@@ -928,7 +928,7 @@ paths:
         when it does, whether the calling agent user is assigned to the client.
       operationId: checkRelationshipV3
       security:
-        - userRestricted:
+        - User-Restricted:
             - read:check-relationship
       parameters:
         - $ref: '#/components/parameters/arnParameter'
@@ -975,7 +975,7 @@ paths:
         when no relationship exists.
       operationId: deauthoriseRelationshipV3
       security:
-        - userRestricted:
+        - User-Restricted:
             - write:relationships
       parameters:
         - $ref: '#/components/parameters/arnParameter'
