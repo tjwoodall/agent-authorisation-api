@@ -361,6 +361,8 @@ components:
               title: URN
               pattern: '^[A-Z]{2}TRUST[0-9]{8}$'
               example: XXTRUST12345678
+        knownFact:
+          $ref: '#/components/schemas/DateKnownFact'
         agentType:
           $ref: '#/components/schemas/AgentType'
 
