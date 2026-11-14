@@ -343,9 +343,6 @@ components:
       required:
         - service
         - clientId
-      not:
-        required:
-          - knownFact
       properties:
         service:
           type: string
